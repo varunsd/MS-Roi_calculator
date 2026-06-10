@@ -55,10 +55,10 @@
     .card-body { padding: 28px 32px; }
 
     /* ── Problem selection cards ── */
-    .problem-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 8px; }
-    .problem-card { position: relative; cursor: pointer; }
+    .problem-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 8px; align-items: stretch; }
+    .problem-card { position: relative; cursor: pointer; display: flex; }
     .problem-card input[type="checkbox"] { position: absolute; opacity: 0; width: 0; height: 0; }
-    .pcard-inner { border: 2px solid var(--border); border-radius: 12px; padding: 14px 8px; text-align: center; transition: all .2s; background: #fff; user-select: none; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+    .pcard-inner { border: 2px solid var(--border); border-radius: 12px; padding: 16px 8px; text-align: center; transition: all .2s; background: #fff; user-select: none; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; }
     .problem-card input:checked ~ .pcard-inner { border-color: var(--primary); background: #eff6ff; box-shadow: 0 0 0 3px rgba(12,45,107,.08); }
     .pcard-icon  { font-size: 24px; height: 36px; display: flex; align-items: center; justify-content: center; margin-bottom: 6px; line-height: 1; }
     .pcard-label { font-size: 12px; font-weight: 600; color: var(--text); line-height: 1.3; }
