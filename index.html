@@ -578,30 +578,18 @@
         </div>
       </div>
 
-      <!-- Section 4: Solar Systems -->
+      <!-- Section 4: System Cost Basis -->
       <div class="admin-sec">
-        <div class="admin-sec-title">&#9889; Solar Systems</div>
-        <p style="font-size:12.5px;color:var(--muted);margin-bottom:14px;">Systems are matched to the wattage range above to determine the investment cost range shown to customers. Add multiple systems at different wattage tiers to show a meaningful range.</p>
-        <table class="admin-sys-table">
-          <thead><tr><th>System Name</th><th>Wattage</th><th>Cost / Install</th><th></th></tr></thead>
-          <tbody id="adminSysBody"></tbody>
-        </table>
-        <div class="add-form">
-          <div class="add-form-title">+ Add New System</div>
-          <div class="add-form-grid">
-            <div>
-              <label style="font-size:12px;display:block;margin-bottom:4px;">System Name</label>
-              <input type="text" id="newName" placeholder="e.g. 600W Premium Kit">
+        <div class="admin-sec-title">&#9889; System Cost Basis</div>
+        <p style="font-size:12.5px;color:var(--muted);margin-bottom:14px;">The install cost is derived directly from system wattage. The lower and upper wattage bounds above are each multiplied by this $/Watt rate to produce the cost range shown to customers.</p>
+        <div class="admin-grid">
+          <div class="admin-field">
+            <label>System Cost Basis</label>
+            <div class="inp-wrap"><span class="inp-pre">$</span><span class="inp-suf">/W</span>
+              <input type="number" class="both" id="aCostPerWatt" min="0" step="0.1"
+                oninput="ADMIN.costPerWatt=+this.value||0; saveAdmin(); calcAdminSize()">
             </div>
-            <div>
-              <label style="font-size:12px;display:block;margin-bottom:4px;">Watts</label>
-              <input type="number" id="newWatts" placeholder="600" min="0">
-            </div>
-            <div>
-              <label style="font-size:12px;display:block;margin-bottom:4px;">Cost / Install ($)</label>
-              <input type="number" id="newCost" placeholder="3500" min="0">
-            </div>
-            <button class="btn btn-primary" onclick="addSystem()">Add</button>
+            <span class="hint">Cost per installed Watt of solar capacity</span>
           </div>
         </div>
       </div>
@@ -633,7 +621,7 @@ function defaultAdmin() {
     lgW: 1100, lgH: 1.5,
     othW: 10, othH: 5,
     lowerPct: 5, upperPct: 10,
-    systems: [{ id: 1, name: '425W Liftgate Kit', wattage: 425, costPerInstall: 2500 }]
+    costPerWatt: 5.88
   };
 }
 
@@ -676,11 +664,9 @@ function calcSizeRange() {
 
 function getCostRange() {
   const { lowerW, upperW } = calcSizeRange();
-  const sorted = [...ADMIN.systems].sort((a, b) => a.wattage - b.wattage);
-  if (!sorted.length) return null;
-  const minSys = sorted.find(s => s.wattage >= lowerW) || sorted[sorted.length - 1];
-  const maxSys = sorted.find(s => s.wattage >= upperW) || sorted[sorted.length - 1];
-  return { minSys, maxSys, isSingle: minSys.id === maxSys.id };
+  const lowerCost = lowerW * ADMIN.costPerWatt;   // cost per install at lower bound
+  const upperCost = upperW * ADMIN.costPerWatt;   // cost per install at upper bound
+  return { lowerW, upperW, lowerCost, upperCost };
 }
 
 // ── Problem toggle (step 1) ────────────────────────────────────────────────
@@ -763,7 +749,6 @@ function go(n) {
 // ── Show results ───────────────────────────────────────────────────────────
 function showResults() {
   const cr = getCostRange();
-  if (!cr) { alert('No solar systems configured. Open the Admin panel to add one.'); return; }
 
   const battery      = calcBattery();
   const liftGate     = calcLiftGate();
@@ -773,14 +758,14 @@ function showResults() {
   const jumpStarts   = calcJumpStarts();
   const totalSavings = battery + liftGate + reefer + apu + serviceCalls + jumpStarts;
 
-  const minInvest  = cr.minSys.costPerInstall * S.fleetSize;
-  const maxInvest  = cr.maxSys.costPerInstall * S.fleetSize;
+  const minInvest  = cr.lowerCost * S.fleetSize;   // lower-bound wattage × $/W × fleet
+  const maxInvest  = cr.upperCost * S.fleetSize;   // upper-bound wattage × $/W × fleet
   // Lower cost → shorter payback, higher ROI
-  const minPayback = +(minInvest / totalSavings).toFixed(1);
-  const maxPayback = +(maxInvest / totalSavings).toFixed(1);
+  const minPayback = totalSavings > 0 ? +(minInvest / totalSavings).toFixed(1) : 0;
+  const maxPayback = totalSavings > 0 ? +(maxInvest / totalSavings).toFixed(1) : 0;
   const minROI     = +(totalSavings * 5 / maxInvest).toFixed(1);
   const maxROI     = +(totalSavings * 5 / minInvest).toFixed(1);
-  const { lowerW, upperW } = calcSizeRange();
+  const { lowerW, upperW } = cr;
 
   // Swap to results
   document.querySelector('.step.active').classList.remove('active');
@@ -796,44 +781,29 @@ function showResults() {
     <div style="background:linear-gradient(135deg,var(--primary) 0%,var(--primary-light) 100%);color:#fff;border-radius:12px;padding:16px 22px;display:flex;align-items:center;gap:16px;">
       <div style="font-size:30px;">☀️</div>
       <div style="flex:1;">
-        <div style="font-size:15px;font-weight:700;margin-bottom:4px;">
-          ${cr.isSingle ? cr.minSys.name : `${cr.minSys.name} – ${cr.maxSys.name}`}
-        </div>
-        <div style="font-size:12.5px;opacity:.82;">Recommended system size: <strong>${lowerW}W – ${upperW}W</strong></div>
+        <div style="font-size:15px;font-weight:700;margin-bottom:4px;">Recommended Merlin Solar System</div>
+        <div style="font-size:12.5px;opacity:.82;">System size range: <strong>${lowerW}W – ${upperW}W</strong></div>
       </div>
       <div style="text-align:right;flex-shrink:0;">
-        <div style="font-size:20px;font-weight:800;color:var(--accent);">
-          ${cr.isSingle ? fmt(cr.minSys.costPerInstall) : `${fmt(cr.minSys.costPerInstall)} – ${fmt(cr.maxSys.costPerInstall)}`}
-        </div>
+        <div style="font-size:20px;font-weight:800;color:var(--accent);">${fmt(cr.lowerCost)} – ${fmt(cr.upperCost)}</div>
         <div style="font-size:11.5px;opacity:.7;">per install</div>
       </div>
     </div>`;
 
   // Range note
   const rn = document.getElementById('rangeNote');
-  if (!cr.isSingle) {
-    rn.style.display = '';
-    rn.textContent = `Ranges shown reflect a ${lowerW}W–${upperW}W system size window (−${ADMIN.lowerPct}% / +${ADMIN.upperPct}% around recommended size). Lower investment = shorter payback; higher investment = more headroom.`;
-  } else {
-    rn.style.display = 'none';
-  }
+  rn.style.display = '';
+  rn.textContent = `Ranges reflect a ${lowerW}W–${upperW}W system size window (−${ADMIN.lowerPct}% / +${ADMIN.upperPct}% around recommended size) at ${fmt(ADMIN.costPerWatt)}/W. Lower investment = shorter payback and higher ROI.`;
 
   // Metrics
   document.getElementById('mInvest').textContent    = fmtR(minInvest, maxInvest);
   document.getElementById('mInvestSub').textContent = `${S.fleetSize} units, fleet-wide`;
   document.getElementById('mSavings').textContent   = fmt(totalSavings);
 
-  if (cr.isSingle) {
-    document.getElementById('mPayback').textContent = `${minPayback}`;
-    document.getElementById('mPaybackSub').textContent = 'years';
-    document.getElementById('mROI').textContent     = `${minROI}×`;
-    document.getElementById('mROISub').textContent  = 'return on investment';
-  } else {
-    document.getElementById('mPayback').textContent = `${minPayback} – ${maxPayback}`;
-    document.getElementById('mPaybackSub').textContent = 'years (range)';
-    document.getElementById('mROI').textContent     = `${minROI}× – ${maxROI}×`;
-    document.getElementById('mROISub').textContent  = '5-year ROI (range)';
-  }
+  document.getElementById('mPayback').textContent    = `${minPayback} – ${maxPayback}`;
+  document.getElementById('mPaybackSub').textContent = 'years (range)';
+  document.getElementById('mROI').textContent        = `${minROI}× – ${maxROI}×`;
+  document.getElementById('mROISub').textContent     = '5-year ROI (range)';
 
   // Breakdown table — only show non-zero rows
   const rows = [
@@ -917,7 +887,7 @@ function openAdmin() {
   set('aOthW',  ADMIN.othW);  set('aOthH',  ADMIN.othH);
   set('aLowerPct', ADMIN.lowerPct);
   set('aUpperPct', ADMIN.upperPct);
-  renderAdminSystems();
+  set('aCostPerWatt', ADMIN.costPerWatt);
   calcAdminSize();
   document.getElementById('adminModal').style.display = 'flex';
 }
@@ -941,49 +911,12 @@ function calcAdminSize() {
 
   const { minW, recW, lowerW, upperW } = calcSizeRange();
   const cr = getCostRange();
-  const costLine = cr
-    ? `<div class="size-result-row"><span class="sr-lbl">Mapped install cost range</span><span class="sr-val">${cr.isSingle ? fmt(cr.minSys.costPerInstall) : `${fmt(cr.minSys.costPerInstall)} – ${fmt(cr.maxSys.costPerInstall)}`}</span></div>`
-    : '';
 
   document.getElementById('sizeResult').innerHTML = `
     <div class="size-result-row"><span class="sr-lbl">Min system size (÷ 5 peak sun hrs)</span><span class="sr-val">${Math.round(minW)} W</span></div>
     <div class="size-result-row"><span class="sr-lbl">Recommended size (+10% buffer)</span><span class="sr-val">${recW} W</span></div>
     <div class="size-result-row"><span class="sr-lbl">System range (−${ADMIN.lowerPct}% / +${ADMIN.upperPct}%)</span><span class="sr-val">${lowerW} W – ${upperW} W</span></div>
-    ${costLine}`;
-}
-
-function renderAdminSystems() {
-  document.getElementById('adminSysBody').innerHTML =
-    [...ADMIN.systems].sort((a,b) => a.wattage - b.wattage).map(s => `
-      <tr>
-        <td>${s.name}</td>
-        <td>${s.wattage}W</td>
-        <td>${fmt(s.costPerInstall)}</td>
-        <td><button class="btn btn-danger btn-sm" onclick="deleteSys(${s.id})">Delete</button></td>
-      </tr>`).join('');
-}
-
-function addSystem() {
-  const name  = document.getElementById('newName').value.trim();
-  const watts = parseFloat(document.getElementById('newWatts').value);
-  const cost  = parseFloat(document.getElementById('newCost').value);
-  if (!name || !watts || !cost) { alert('Please fill in all three fields.'); return; }
-  const maxId = ADMIN.systems.reduce((m, s) => Math.max(m, s.id), 0);
-  ADMIN.systems.push({ id: maxId + 1, name, wattage: watts, costPerInstall: cost });
-  saveAdmin();
-  document.getElementById('newName').value  = '';
-  document.getElementById('newWatts').value = '';
-  document.getElementById('newCost').value  = '';
-  renderAdminSystems();
-  calcAdminSize();
-}
-
-function deleteSys(id) {
-  if (ADMIN.systems.length === 1) { alert('Cannot delete the last system. Add another first.'); return; }
-  ADMIN.systems = ADMIN.systems.filter(s => s.id !== id);
-  saveAdmin();
-  renderAdminSystems();
-  calcAdminSize();
+    <div class="size-result-row"><span class="sr-lbl">Install cost range (@ ${fmt(ADMIN.costPerWatt)}/W)</span><span class="sr-val">${fmt(cr.lowerCost)} – ${fmt(cr.upperCost)}</span></div>`;
 }
 
 // ── Init ───────────────────────────────────────────────────────────────────
