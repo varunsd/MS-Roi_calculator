@@ -21,97 +21,60 @@
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
-
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      min-height: 100vh;
-    }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
 
     /* ── Header ── */
-    header {
-      background: var(--primary);
-      color: #fff;
-      padding: 14px 32px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      box-shadow: 0 2px 12px rgba(0,0,0,.25);
-    }
+    header { background: var(--primary); color: #fff; padding: 14px 32px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 2px 12px rgba(0,0,0,.25); }
     .logo { display: flex; align-items: center; gap: 10px; font-size: 20px; font-weight: 700; }
     .logo svg { width: 34px; height: 34px; }
     .logo-accent { color: var(--accent); }
-    .admin-btn {
-      background: rgba(255,255,255,.12);
-      color: #fff;
-      border: 1px solid rgba(255,255,255,.25);
-      padding: 7px 16px;
-      border-radius: 7px;
-      cursor: pointer;
-      font-size: 13px;
-      transition: background .2s;
-    }
+    .admin-btn { background: rgba(255,255,255,.12); color: #fff; border: 1px solid rgba(255,255,255,.25); padding: 7px 16px; border-radius: 7px; cursor: pointer; font-size: 13px; transition: background .2s; }
     .admin-btn:hover { background: rgba(255,255,255,.22); }
 
     /* ── Container ── */
-    .container {
-      max-width: 740px;
-      margin: 0 auto;
-      padding: 28px 16px 72px;
-    }
+    .container { max-width: 740px; margin: 0 auto; padding: 28px 16px 72px; }
 
-    /* ── Progress ── */
+    /* ── Progress (2 steps) ── */
     #progressWrapper { margin-bottom: 28px; }
     .progress-steps { display: flex; align-items: center; justify-content: center; }
     .step-wrap { display: flex; flex-direction: column; align-items: center; }
-    .step-circle {
-      width: 36px; height: 36px; border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      font-weight: 600; font-size: 14px;
-      border: 2px solid var(--border);
-      background: #fff; color: var(--muted);
-      transition: all .25s; z-index: 1;
-    }
-    .step-circle.active  { background: var(--primary); border-color: var(--primary); color: #fff; }
-    .step-circle.done    { background: var(--success); border-color: var(--success); color: #fff; }
+    .step-circle { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 14px; border: 2px solid var(--border); background: #fff; color: var(--muted); transition: all .25s; }
+    .step-circle.active { background: var(--primary); border-color: var(--primary); color: #fff; }
+    .step-circle.done   { background: var(--success); border-color: var(--success); color: #fff; }
     .step-lbl { font-size: 11px; color: var(--muted); margin-top: 4px; white-space: nowrap; }
     .step-lbl.active { color: var(--primary); font-weight: 700; }
-    .connector { height: 2px; flex: 1; min-width: 36px; background: var(--border); margin-top: -20px; transition: background .25s; }
+    .connector { height: 2px; flex: 1; min-width: 80px; background: var(--border); margin-top: -20px; transition: background .25s; }
     .connector.done { background: var(--success); }
 
     /* ── Card ── */
     .card { background: var(--card); border-radius: 16px; box-shadow: 0 2px 4px rgba(0,0,0,.07), 0 8px 24px rgba(0,0,0,.06); overflow: hidden; }
-    .card-header {
-      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
-      color: #fff; padding: 26px 32px;
-    }
+    .card-header { background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%); color: #fff; padding: 26px 32px; }
     .card-header .step-badge { font-size: 11px; opacity: .65; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
     .card-header h2 { font-size: 21px; font-weight: 700; }
     .card-header p  { margin-top: 5px; opacity: .78; font-size: 13.5px; }
     .card-body { padding: 28px 32px; }
+
+    /* ── Problem selection cards ── */
+    .problem-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 8px; }
+    .problem-card { position: relative; cursor: pointer; }
+    .problem-card input[type="checkbox"] { position: absolute; opacity: 0; width: 0; height: 0; }
+    .pcard-inner { border: 2px solid var(--border); border-radius: 12px; padding: 16px 10px; text-align: center; transition: all .2s; background: #fff; user-select: none; }
+    .problem-card input:checked ~ .pcard-inner { border-color: var(--primary); background: #eff6ff; box-shadow: 0 0 0 3px rgba(12,45,107,.08); }
+    .pcard-icon  { font-size: 24px; margin-bottom: 7px; }
+    .pcard-label { font-size: 12px; font-weight: 600; color: var(--text); line-height: 1.3; }
+    .problem-card input:checked ~ .pcard-inner .pcard-label { color: var(--primary); }
 
     /* ── Form ── */
     .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
     .form-grid.one { grid-template-columns: 1fr; }
     .form-group { display: flex; flex-direction: column; gap: 5px; }
     .form-group.span2 { grid-column: 1 / -1; }
-
     label { font-size: 13px; font-weight: 600; color: var(--text); display: flex; align-items: center; gap: 6px; }
-    label .tip {
-      width: 16px; height: 16px; border-radius: 50%;
-      background: var(--border); color: var(--muted);
-      font-size: 11px; font-weight: 700;
-      display: inline-flex; align-items: center; justify-content: center;
-      cursor: help; flex-shrink: 0;
-    }
+    label .tip { width: 16px; height: 16px; border-radius: 50%; background: var(--border); color: var(--muted); font-size: 11px; font-weight: 700; display: inline-flex; align-items: center; justify-content: center; cursor: help; flex-shrink: 0; }
     .hint { font-size: 11.5px; color: var(--muted); }
 
     .inp-wrap { position: relative; }
-    .inp-pre, .inp-suf {
-      position: absolute; top: 50%; transform: translateY(-50%);
-      color: var(--muted); font-size: 14px; pointer-events: none;
-    }
+    .inp-pre, .inp-suf { position: absolute; top: 50%; transform: translateY(-50%); color: var(--muted); font-size: 14px; pointer-events: none; }
     .inp-pre { left: 11px; }
     .inp-suf { right: 11px; }
 
@@ -122,117 +85,49 @@
       transition: border-color .18s, box-shadow .18s; outline: none;
     }
     input.pre  { padding-left: 26px; }
-    input.suf  { padding-right: 40px; }
+    input.suf  { padding-right: 42px; }
     input.both { padding-left: 26px; padding-right: 50px; }
-    input:focus, select:focus {
-      border-color: var(--primary);
-      box-shadow: 0 0 0 3px rgba(12,45,107,.1);
-      background: #fff;
-    }
+    input:focus, select:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(12,45,107,.1); background: #fff; }
 
-    .sec-title {
-      font-size: 12px; font-weight: 700; color: var(--primary);
-      text-transform: uppercase; letter-spacing: .6px;
-      margin: 22px 0 14px;
-      display: flex; align-items: center; gap: 8px;
-    }
+    .sec-title { font-size: 12px; font-weight: 700; color: var(--primary); text-transform: uppercase; letter-spacing: .6px; margin: 22px 0 14px; display: flex; align-items: center; gap: 8px; }
     .sec-title::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+    .info-band { background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 10px; padding: 12px 16px; font-size: 13px; color: #1e40af; display: flex; gap: 10px; margin-bottom: 20px; }
 
-    .info-band {
-      background: #eff6ff; border: 1px solid #bfdbfe;
-      border-radius: 10px; padding: 12px 16px;
-      font-size: 13px; color: #1e40af;
-      display: flex; gap: 10px; margin-bottom: 20px;
-    }
-
-    .preview-box {
-      background: #ecfdf5; border: 1px solid #6ee7b7;
-      border-radius: 10px; padding: 14px 18px; margin-top: 22px;
-    }
+    .preview-box { background: #ecfdf5; border: 1px solid #6ee7b7; border-radius: 10px; padding: 14px 18px; margin-top: 22px; }
     .preview-box .plbl { font-size: 11.5px; color: #065f46; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; margin-bottom: 2px; }
     .preview-box .pval { font-size: 26px; font-weight: 800; color: #064e3b; }
 
     /* ── Nav buttons ── */
-    .nav-btns {
-      display: flex; justify-content: space-between; align-items: center;
-      padding: 18px 32px; border-top: 1px solid var(--border); background: #fafbfc;
-    }
-    .btn {
-      padding: 10px 24px; border-radius: 8px; font-size: 14.5px;
-      font-weight: 600; cursor: pointer; border: none;
-      transition: all .18s; display: inline-flex; align-items: center; gap: 7px;
-    }
-    .btn-primary  { background: var(--primary); color: #fff; }
-    .btn-primary:hover  { background: var(--primary-light); }
+    .nav-btns { display: flex; justify-content: space-between; align-items: center; padding: 18px 32px; border-top: 1px solid var(--border); background: #fafbfc; }
+    .btn { padding: 10px 24px; border-radius: 8px; font-size: 14.5px; font-weight: 600; cursor: pointer; border: none; transition: all .18s; display: inline-flex; align-items: center; gap: 7px; }
+    .btn-primary   { background: var(--primary); color: #fff; }
+    .btn-primary:hover   { background: var(--primary-light); }
     .btn-secondary { background: #fff; color: var(--text); border: 1.5px solid var(--border); }
     .btn-secondary:hover { background: var(--bg); }
-    .btn-accent   { background: var(--accent); color: #fff; }
-    .btn-accent:hover   { background: var(--accent-dark); }
-    .btn-danger   { background: #fee2e2; color: #dc2626; border: none; }
-    .btn-danger:hover   { background: #fca5a5; }
+    .btn-accent    { background: var(--accent); color: #fff; }
+    .btn-accent:hover    { background: var(--accent-dark); }
+    .btn-danger    { background: #fee2e2; color: #dc2626; border: none; }
+    .btn-danger:hover    { background: #fca5a5; }
     .btn-sm { padding: 5px 12px; font-size: 12px; border-radius: 6px; }
 
-    /* ── Load table (step 4) ── */
-    .load-table { width: 100%; border-collapse: collapse; font-size: 14px; }
-    .load-table th { padding: 9px 12px; background: var(--bg); text-align: left; font-size: 11.5px; text-transform: uppercase; letter-spacing: .5px; color: var(--muted); }
-    .load-table td { padding: 10px 12px; border-bottom: 1px solid var(--border); }
-    .load-table td input { width: 80px; text-align: center; }
-    .load-table .total-row td { font-weight: 700; background: #f0f4ff; }
-    .num-cell { text-align: right; font-weight: 600; }
-
-    .size-box {
-      background: #eff6ff; border: 1px solid #bfdbfe;
-      border-radius: 10px; padding: 14px 18px; margin-top: 18px;
-    }
-    .size-row { display: flex; justify-content: space-between; padding: 5px 0; font-size: 14px; }
-    .size-row:not(:last-child) { border-bottom: 1px solid #dbeafe; }
-    .size-lbl { color: var(--muted); }
-    .size-val { font-weight: 700; color: var(--primary); }
-
     /* ── Results ── */
-    .results-header {
-      background: linear-gradient(135deg, #064e3b 0%, #065f46 100%);
-      color: #fff; padding: 26px 32px;
-    }
+    .results-header { background: linear-gradient(135deg, #064e3b 0%, #065f46 100%); color: #fff; padding: 26px 32px; }
     .results-header .step-badge { font-size: 11px; opacity: .65; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
     .results-header h2 { font-size: 21px; font-weight: 700; }
     .results-header p  { margin-top: 5px; opacity: .78; font-size: 13.5px; }
 
-    .sys-banner {
-      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
-      color: #fff; border-radius: 12px;
-      padding: 18px 22px; margin-bottom: 22px;
-      display: flex; align-items: center; gap: 18px;
-    }
-    .sys-banner-icon {
-      width: 46px; height: 46px; background: rgba(255,255,255,.15);
-      border-radius: 10px; display: flex; align-items: center; justify-content: center;
-      flex-shrink: 0;
-    }
-    .sys-banner-name { font-size: 17px; font-weight: 700; margin-bottom: 3px; }
-    .sys-banner-sub  { font-size: 12.5px; opacity: .78; }
-    .sys-banner-cost { margin-left: auto; text-align: right; flex-shrink: 0; }
-    .sys-banner-cost .cv { font-size: 24px; font-weight: 800; color: var(--accent); }
-    .sys-banner-cost .cl { font-size: 11.5px; opacity: .7; }
-
     .metrics-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 22px; }
-    .metric {
-      background: #fff; border-radius: 12px; padding: 18px 16px;
-      box-shadow: 0 1px 3px rgba(0,0,0,.07);
-      text-align: center; border-top: 4px solid var(--border);
-    }
+    .metric { background: #fff; border-radius: 12px; padding: 18px 16px; box-shadow: 0 1px 3px rgba(0,0,0,.07); text-align: center; border-top: 4px solid var(--border); }
     .metric.m-invest { border-top-color: var(--accent); }
     .metric.m-save   { border-top-color: var(--success); }
     .metric.m-pay    { border-top-color: var(--primary); }
     .metric.m-roi    { border-top-color: #7c3aed; }
     .metric .mlbl { font-size: 11px; color: var(--muted); font-weight: 700; text-transform: uppercase; letter-spacing: .5px; }
-    .metric .mval { font-size: 34px; font-weight: 800; margin: 7px 0 3px; }
+    .metric .mval { font-size: 24px; font-weight: 800; margin: 7px 0 3px; line-height: 1.25; }
     .metric .msub { font-size: 12px; color: var(--muted); }
+    .range-note { font-size: 11px; color: var(--muted); font-style: italic; margin-top: 2px; }
 
-    .chart-card {
-      background: #fff; border-radius: 12px;
-      padding: 22px; box-shadow: 0 1px 3px rgba(0,0,0,.07); margin-bottom: 18px;
-    }
+    .chart-card { background: #fff; border-radius: 12px; padding: 22px; box-shadow: 0 1px 3px rgba(0,0,0,.07); margin-bottom: 18px; }
     .chart-title { font-size: 14.5px; font-weight: 700; margin-bottom: 16px; }
 
     .brkdn-table { width: 100%; border-collapse: collapse; font-size: 14px; }
@@ -242,48 +137,42 @@
     .brkdn-table .tr-total td { font-weight: 700; background: #ecfdf5; border-top: 2px solid var(--success); }
     .ra { text-align: right; }
 
-    /* ── System picker in step 4 ── */
-    .sys-pick {
-      border: 1.5px solid var(--border); border-radius: 12px;
-      padding: 16px 20px; margin-top: 4px;
-      display: flex; align-items: center; gap: 14px;
-    }
-    .sys-pick.ok  { border-color: #6ee7b7; background: #ecfdf5; }
-    .sys-pick.warn { border-color: #fcd34d; background: #fffbeb; }
-    .sys-pick-info { flex: 1; }
-    .sys-pick-name { font-size: 15px; font-weight: 700; margin-bottom: 3px; }
-    .sys-pick-sub  { font-size: 12.5px; color: var(--muted); }
-    .sys-pick-cost { text-align: right; flex-shrink: 0; }
-    .sys-pick-cost .pv { font-size: 20px; font-weight: 800; color: var(--primary); }
-    .sys-pick-cost .pl { font-size: 11.5px; color: var(--muted); }
-
     /* ── Admin modal ── */
-    .modal-overlay {
-      position: fixed; inset: 0; background: rgba(0,0,0,.5);
-      display: none; align-items: center; justify-content: center; z-index: 1000;
-    }
-    .modal {
-      background: #fff; border-radius: 16px;
-      width: 92%; max-width: 580px; max-height: 85vh; overflow-y: auto;
-      box-shadow: 0 20px 60px rgba(0,0,0,.3);
-    }
-    .modal-hdr {
-      padding: 18px 22px; border-bottom: 1px solid var(--border);
-      display: flex; justify-content: space-between; align-items: center;
-    }
+    .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.5); display: none; align-items: center; justify-content: center; z-index: 1000; }
+    .modal { background: #fff; border-radius: 16px; width: 94%; max-width: 700px; max-height: 90vh; overflow-y: auto; box-shadow: 0 20px 60px rgba(0,0,0,.3); }
+    .modal-hdr { padding: 16px 22px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; background: #fff; z-index: 10; }
     .modal-hdr h3 { font-size: 17px; font-weight: 700; }
     .modal-close { background: none; border: none; font-size: 24px; cursor: pointer; color: var(--muted); line-height: 1; }
     .modal-body { padding: 22px; }
 
-    .admin-table { width: 100%; border-collapse: collapse; font-size: 13.5px; margin-bottom: 18px; }
-    .admin-table th { padding: 8px 10px; background: var(--bg); font-size: 11px; text-transform: uppercase; letter-spacing: .5px; color: var(--muted); text-align: left; }
-    .admin-table td { padding: 9px 10px; border-bottom: 1px solid var(--border); }
+    .admin-sec { margin-bottom: 28px; padding-bottom: 28px; border-bottom: 1px solid var(--border); }
+    .admin-sec:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
+    .admin-sec-title { font-size: 13px; font-weight: 700; color: var(--primary); text-transform: uppercase; letter-spacing: .6px; padding-bottom: 10px; border-bottom: 2px solid var(--primary); margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+    .admin-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .admin-grid.three { grid-template-columns: 1fr 1fr 1fr; }
+    .admin-field { display: flex; flex-direction: column; gap: 4px; }
+    .admin-field label { font-size: 12.5px; font-weight: 600; }
 
-    .add-form {
-      background: var(--bg); border-radius: 10px; padding: 16px;
-    }
-    .add-form-title { font-size: 13px; font-weight: 700; margin-bottom: 12px; }
-    .add-form-grid { display: grid; grid-template-columns: 1fr 90px 110px auto; gap: 8px; align-items: end; }
+    .load-table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+    .load-table th { padding: 8px 10px; background: var(--bg); text-align: left; font-size: 11px; text-transform: uppercase; letter-spacing: .5px; color: var(--muted); }
+    .load-table td { padding: 9px 10px; border-bottom: 1px solid var(--border); }
+    .load-table td input { width: 75px; text-align: center; padding: 7px 8px; font-size: 13px; }
+    .load-table .total-row td { font-weight: 700; background: #f0f4ff; }
+    .lnum { text-align: right; font-weight: 600; }
+
+    .size-result { background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 8px; padding: 12px 16px; margin-top: 12px; }
+    .size-result-row { display: flex; justify-content: space-between; padding: 4px 0; font-size: 13px; }
+    .size-result-row:not(:last-child) { border-bottom: 1px solid #dbeafe; }
+    .sr-lbl { color: var(--muted); }
+    .sr-val { font-weight: 700; color: var(--primary); }
+
+    .admin-sys-table { width: 100%; border-collapse: collapse; font-size: 13px; margin-bottom: 14px; }
+    .admin-sys-table th { padding: 8px 10px; background: var(--bg); text-align: left; font-size: 11px; text-transform: uppercase; letter-spacing: .5px; color: var(--muted); }
+    .admin-sys-table td { padding: 8px 10px; border-bottom: 1px solid var(--border); }
+
+    .add-form { background: var(--bg); border-radius: 10px; padding: 14px; }
+    .add-form-title { font-size: 12.5px; font-weight: 700; margin-bottom: 10px; }
+    .add-form-grid { display: grid; grid-template-columns: 1fr 85px 110px auto; gap: 8px; align-items: end; }
 
     /* ── Step visibility ── */
     .step { display: none; }
@@ -291,16 +180,18 @@
 
     /* ── Print ── */
     @media print {
-      header, .admin-btn, .nav-btns, #progressWrapper, .no-print { display: none !important; }
+      header, .nav-btns, #progressWrapper, .no-print { display: none !important; }
       body { background: #fff; }
-      .card { box-shadow: none; border: 1px solid #ddd; }
+      .card { box-shadow: none; }
     }
 
     /* ── Responsive ── */
     @media (max-width: 580px) {
-      .form-grid { grid-template-columns: 1fr; }
+      .form-grid, .admin-grid { grid-template-columns: 1fr; }
+      .admin-grid.three { grid-template-columns: 1fr 1fr; }
       .metrics-grid { grid-template-columns: 1fr; }
-      .card-body, .nav-btns, .card-header, .results-header { padding: 18px 16px; }
+      .problem-grid { grid-template-columns: 1fr 1fr; }
+      .card-body, .nav-btns, .card-header, .results-header, .modal-body { padding: 16px; }
       .add-form-grid { grid-template-columns: 1fr 1fr; }
       .add-form-grid button { grid-column: 1 / -1; }
     }
@@ -308,14 +199,14 @@
 </head>
 <body>
 
-<!-- ═══════════════════════════════ HEADER ═══════════════════════════════ -->
+<!-- ══════════════════ HEADER ══════════════════ -->
 <header>
   <div class="logo">
     <svg viewBox="0 0 34 34" fill="none">
       <rect width="34" height="34" rx="7" fill="#f59e0b"/>
-      <rect x="5" y="6"  width="9" height="8" rx="1" fill="white" opacity=".9"/>
-      <rect x="20" y="6" width="9" height="8" rx="1" fill="white" opacity=".9"/>
-      <rect x="5" y="18" width="9" height="8" rx="1" fill="white" opacity=".9"/>
+      <rect x="5"  y="6"  width="9" height="8" rx="1" fill="white" opacity=".9"/>
+      <rect x="20" y="6"  width="9" height="8" rx="1" fill="white" opacity=".9"/>
+      <rect x="5"  y="18" width="9" height="8" rx="1" fill="white" opacity=".9"/>
       <rect x="20" y="18" width="9" height="8" rx="1" fill="white" opacity=".9"/>
     </svg>
     Merlin <span class="logo-accent">Solar</span>
@@ -323,317 +214,148 @@
   <button class="admin-btn" onclick="openAdmin()">&#9881; Admin</button>
 </header>
 
-<!-- ═══════════════════════════════ MAIN ═══════════════════════════════ -->
+<!-- ══════════════════ MAIN ══════════════════ -->
 <div class="container">
 
-  <!-- Progress indicator -->
+  <!-- Progress: 2 steps -->
   <div id="progressWrapper">
     <div class="progress-steps">
       <div class="step-wrap">
         <div class="step-circle active" id="sc1">1</div>
-        <div class="step-lbl active" id="sl1">Fleet</div>
+        <div class="step-lbl active"   id="sl1">Fleet</div>
       </div>
       <div class="connector" id="cn1"></div>
       <div class="step-wrap">
         <div class="step-circle" id="sc2">2</div>
-        <div class="step-lbl" id="sl2">Batteries</div>
-      </div>
-      <div class="connector" id="cn2"></div>
-      <div class="step-wrap">
-        <div class="step-circle" id="sc3">3</div>
-        <div class="step-lbl" id="sl3">Services</div>
-      </div>
-      <div class="connector" id="cn3"></div>
-      <div class="step-wrap">
-        <div class="step-circle" id="sc4">4</div>
-        <div class="step-lbl" id="sl4">System</div>
+        <div class="step-lbl"   id="sl2">Annual Events</div>
       </div>
     </div>
   </div>
 
-  <!-- ── STEP 1 : Fleet Overview ── -->
+  <!-- ── STEP 1: Fleet + Problem Selection ── -->
   <div class="step active" id="step-1">
     <div class="card">
       <div class="card-header">
-        <div class="step-badge">Step 1 of 4</div>
+        <div class="step-badge">Step 1 of 2</div>
         <h2>Tell us about your fleet</h2>
-        <p>We'll use this to size the savings potential for your operation.</p>
+        <p>Select your fleet size and the challenges you're looking to address with solar.</p>
       </div>
       <div class="card-body">
         <div class="form-grid">
           <div class="form-group span2">
             <label for="companyName">Company Name <span style="font-weight:400;color:var(--muted)">(optional)</span></label>
-            <input type="text" id="companyName" placeholder="e.g. ABC Logistics Inc."
-              oninput="S.companyName = this.value">
+            <input type="text" id="companyName" placeholder="e.g. ABC Logistics Inc." oninput="S.companyName = this.value">
           </div>
           <div class="form-group span2">
             <label for="fleetSize">
               Number of Trucks / Trailers in Fleet
               <span class="tip" title="Total units that will receive Merlin Solar panels">?</span>
             </label>
-            <input type="number" id="fleetSize" value="10" min="1" step="1"
-              oninput="S.fleetSize = +this.value || 0; refreshPreviews()">
+            <input type="number" id="fleetSize" value="10" min="1" step="1" oninput="S.fleetSize = +this.value || 0">
           </div>
         </div>
 
-        <div style="margin-top:24px; padding:18px 20px; background:#eff6ff; border-radius:12px; border:1px solid #bfdbfe;">
-          <div style="font-size:14px; color:#1e3a8a; font-weight:700; margin-bottom:7px;">&#9728;&#65039; How this calculator works</div>
-          <div style="font-size:13px; color:#1e40af; line-height:1.65;">
-            We compare your current annual costs from battery failures, lift gate repairs, service calls, and jump starts against a one-time investment in Merlin Solar's flexible PV panels installed on each trailer. The result: your payback period and 5-year ROI — in under two minutes.
+        <div class="sec-title" style="margin-top:26px;">Which problems are you looking to solve?</div>
+        <div class="problem-grid">
+          <label class="problem-card">
+            <input type="checkbox" value="battery" checked onchange="toggleProblem(this)">
+            <div class="pcard-inner">
+              <div class="pcard-icon">🔋</div>
+              <div class="pcard-label">Battery Maintenance</div>
+            </div>
+          </label>
+          <label class="problem-card">
+            <input type="checkbox" value="liftgate" onchange="toggleProblem(this)">
+            <div class="pcard-inner">
+              <div class="pcard-icon">🔼</div>
+              <div class="pcard-label">Lift Gate</div>
+            </div>
+          </label>
+          <label class="problem-card">
+            <input type="checkbox" value="reefer" onchange="toggleProblem(this)">
+            <div class="pcard-inner">
+              <div class="pcard-icon">❄️</div>
+              <div class="pcard-label">Reefer</div>
+            </div>
+          </label>
+          <label class="problem-card">
+            <input type="checkbox" value="apu" onchange="toggleProblem(this)">
+            <div class="pcard-inner">
+              <div class="pcard-icon">⚡</div>
+              <div class="pcard-label">APU</div>
+            </div>
+          </label>
+        </div>
+
+        <div style="margin-top:22px;padding:16px 18px;background:#eff6ff;border-radius:12px;border:1px solid #bfdbfe;">
+          <div style="font-size:13.5px;color:#1e3a8a;font-weight:700;margin-bottom:6px;">&#9728;&#65039; How this works</div>
+          <div style="font-size:13px;color:#1e40af;line-height:1.65;">
+            Select all the issues relevant to your fleet. We'll estimate your current annual costs for those categories and compare them against a one-time Merlin Solar installation — giving you a payback period and 5-year ROI estimate in two quick steps.
           </div>
         </div>
       </div>
       <div class="nav-btns">
         <div></div>
-        <button class="btn btn-primary" onclick="go(2)">Next: Battery Costs &#8594;</button>
+        <button class="btn btn-primary" onclick="go(2)">Next: Annual Events &#8594;</button>
       </div>
     </div>
   </div>
 
-  <!-- ── STEP 2 : Battery Costs ── -->
+  <!-- ── STEP 2: Annual Events (simplified) ── -->
   <div class="step" id="step-2">
     <div class="card">
       <div class="card-header">
-        <div class="step-badge">Step 2 of 4</div>
-        <h2>Battery Replacement Costs</h2>
-        <p>How much does your fleet spend on battery maintenance each year?</p>
-      </div>
-      <div class="card-body">
-        <div class="info-band">
-          <span>&#128161;</span>
-          <span>Merlin Solar panels trickle-charge your starter batteries while trucks are parked, dramatically reducing replacement frequency and associated labour costs.</span>
-        </div>
-
-        <div class="sec-title">Battery Configuration</div>
-        <div class="form-grid">
-          <div class="form-group">
-            <label for="batteriesPerTrailer">
-              Batteries per Truck / Trailer
-              <span class="tip" title="Number of batteries on each vehicle">?</span>
-            </label>
-            <input type="number" id="batteriesPerTrailer" value="1" min="0" step="1"
-              oninput="S.batteriesPerTrailer = +this.value||0; refreshPreviews()">
-          </div>
-          <div class="form-group">
-            <label for="batteryCost">
-              Battery Cost per Unit
-              <span class="tip" title="Cost of a single AGM replacement battery">?</span>
-            </label>
-            <div class="inp-wrap">
-              <span class="inp-pre">$</span>
-              <input type="number" id="batteryCost" value="700" min="0" class="pre"
-                oninput="S.batteryCost = +this.value||0; refreshPreviews()">
-            </div>
-          </div>
-          <div class="form-group">
-            <label for="battReplPerYear">
-              Replacements per Trailer / Year
-              <span class="tip" title="How often batteries need replacing on average per vehicle">?</span>
-            </label>
-            <input type="number" id="battReplPerYear" value="1" min="0" step="0.5"
-              oninput="S.battReplPerYear = +this.value||0; refreshPreviews()">
-          </div>
-          <div class="form-group">
-            <label for="battReplTime">
-              Labour Time per Replacement
-              <span class="tip" title="Technician hours to swap batteries on one vehicle">?</span>
-            </label>
-            <div class="inp-wrap">
-              <span class="inp-suf">hrs</span>
-              <input type="number" id="battReplTime" value="0.5" min="0" step="0.25" class="suf"
-                oninput="S.battReplTime = +this.value||0; refreshPreviews()">
-            </div>
-          </div>
-        </div>
-
-        <div class="sec-title">Labour Rate</div>
-        <div class="form-grid">
-          <div class="form-group">
-            <label for="laborRate">
-              Technician Labour Rate
-              <span class="tip" title="Shop labour rate in your region. US average ≈ $140/hr.">?</span>
-            </label>
-            <div class="inp-wrap">
-              <span class="inp-pre">$</span>
-              <span class="inp-suf">/hr</span>
-              <input type="number" id="laborRate" value="140" min="0" class="both"
-                oninput="S.laborRate = +this.value||0; refreshPreviews()">
-            </div>
-            <span class="hint">US fleet average: $140 / hr</span>
-          </div>
-        </div>
-
-        <div class="preview-box">
-          <div class="plbl">Annual Battery Replacement Cost — fleet-wide</div>
-          <div class="pval" id="prevBattery">$0</div>
-        </div>
-      </div>
-      <div class="nav-btns">
-        <button class="btn btn-secondary" onclick="go(1)">&#8592; Back</button>
-        <button class="btn btn-primary" onclick="go(3)">Next: Service Costs &#8594;</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- ── STEP 3 : Service & Jump Starts ── -->
-  <div class="step" id="step-3">
-    <div class="card">
-      <div class="card-header">
-        <div class="step-badge">Step 3 of 4</div>
-        <h2>Service Events &amp; Jump Starts</h2>
-        <p>Unplanned costs that a well-charged battery can eliminate.</p>
+        <div class="step-badge">Step 2 of 2</div>
+        <h2>Annual Events &amp; Maintenance</h2>
+        <p>How often do these events occur across your fleet each year?</p>
       </div>
       <div class="card-body">
 
-        <div class="sec-title">Lift Gate Repairs</div>
-        <div class="form-grid one">
-          <div class="form-group">
-            <label for="liftGateAnnual">
-              Annual Lift Gate Repair Cost — Fleet Total
-              <span class="tip" title="Total annual cost for lift gate component replacements across all trailers (switches ~$300, solenoids ~$110, power units ~$1,800 each)">?</span>
-            </label>
-            <div class="inp-wrap">
-              <span class="inp-pre">$</span>
-              <input type="number" id="liftGateAnnual" value="2500" min="0" class="pre"
-                oninput="S.liftGateAnnual = +this.value||0; refreshPreviews()">
+        <!-- Battery replacements — shown only when battery selected -->
+        <div id="batterySection">
+          <div class="sec-title" style="margin-top:0;">Battery Maintenance</div>
+          <div class="form-grid one">
+            <div class="form-group">
+              <label for="battReplPerYear">
+                Battery Replacements per Trailer / Year
+                <span class="tip" title="Average number of times per year you replace batteries on each vehicle">?</span>
+              </label>
+              <input type="number" id="battReplPerYear" value="1" min="0" step="0.5" oninput="S.battReplPerYear = +this.value||0; refreshPreview()">
+              <span class="hint" id="battCostHint">Loading cost details from Admin…</span>
             </div>
-            <span class="hint">Enter the lump-sum total across all trailers per year.</span>
           </div>
         </div>
 
-        <div class="sec-title">Service Calls</div>
+        <div class="sec-title" id="serviceSecTitle">Service Calls &amp; Jump Starts</div>
         <div class="form-grid">
-          <div class="form-group">
-            <label for="serviceCallFee">
-              Service Call Fee per Event
-              <span class="tip" title="Average trip / service call fee. US average ~$1,500.">?</span>
-            </label>
-            <div class="inp-wrap">
-              <span class="inp-pre">$</span>
-              <input type="number" id="serviceCallFee" value="1500" min="0" class="pre"
-                oninput="S.serviceCallFee = +this.value||0; refreshPreviews()">
-            </div>
-          </div>
           <div class="form-group">
             <label for="serviceCallsPerYear">
               Service Calls per Year — Fleet Total
-              <span class="tip" title="Total number of service call events across the whole fleet per year">?</span>
+              <span class="tip" title="Total unplanned service or roadside call-out events across your entire fleet per year">?</span>
             </label>
-            <input type="number" id="serviceCallsPerYear" value="5" min="0" step="1"
-              oninput="S.serviceCallsPerYear = +this.value||0; refreshPreviews()">
-          </div>
-        </div>
-
-        <div class="sec-title">Jump Starts</div>
-        <div class="form-grid">
-          <div class="form-group">
-            <label for="jumpStartFee">
-              Jump Start Fee per Event
-              <span class="tip" title="Cost per jump start call-out. US average ~$125.">?</span>
-            </label>
-            <div class="inp-wrap">
-              <span class="inp-pre">$</span>
-              <input type="number" id="jumpStartFee" value="125" min="0" class="pre"
-                oninput="S.jumpStartFee = +this.value||0; refreshPreviews()">
-            </div>
+            <input type="number" id="serviceCallsPerYear" value="5" min="0" step="1" oninput="S.serviceCallsPerYear = +this.value||0; refreshPreview()">
+            <span class="hint" id="serviceHint">Loading…</span>
           </div>
           <div class="form-group">
             <label for="jumpStartsPerYear">
               Jump Starts per Year — Fleet Total
-              <span class="tip" title="Total jump start events across the whole fleet per year">?</span>
+              <span class="tip" title="Total dead-battery jump start events across your entire fleet per year">?</span>
             </label>
-            <input type="number" id="jumpStartsPerYear" value="7" min="0" step="1"
-              oninput="S.jumpStartsPerYear = +this.value||0; refreshPreviews()">
-          </div>
-          <div class="form-group">
-            <label for="jumpStartTime">
-              Driver / Tech Time per Jump Start
-              <span class="tip" title="Hours of labour per jump-start event (waiting + technician time)">?</span>
-            </label>
-            <div class="inp-wrap">
-              <span class="inp-suf">hrs</span>
-              <input type="number" id="jumpStartTime" value="1" min="0" step="0.25" class="suf"
-                oninput="S.jumpStartTime = +this.value||0; refreshPreviews()">
-            </div>
+            <input type="number" id="jumpStartsPerYear" value="7" min="0" step="1" oninput="S.jumpStartsPerYear = +this.value||0; refreshPreview()">
+            <span class="hint" id="jumpHint">Loading…</span>
           </div>
         </div>
+
+        <!-- Repair cost summary based on problem selection -->
+        <div id="repairSummary"></div>
 
         <div class="preview-box">
-          <div class="plbl">Annual Service &amp; Jump Start Costs — fleet-wide</div>
-          <div class="pval" id="prevService">$0</div>
+          <div class="plbl">Estimated Total Annual Savings — fleet-wide</div>
+          <div class="pval" id="prevTotal">$0</div>
         </div>
       </div>
       <div class="nav-btns">
-        <button class="btn btn-secondary" onclick="go(2)">&#8592; Back</button>
-        <button class="btn btn-primary" onclick="go(4)">Next: System Sizing &#8594;</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- ── STEP 4 : Load Profile & System ── -->
-  <div class="step" id="step-4">
-    <div class="card">
-      <div class="card-header">
-        <div class="step-badge">Step 4 of 4</div>
-        <h2>Electrical Load Profile</h2>
-        <p>Help us size the right Merlin Solar system for your application.</p>
-      </div>
-      <div class="card-body">
-        <div class="info-band">
-          <span>&#128268;</span>
-          <span>Enter your daily electrical loads below. We'll calculate the minimum solar panel wattage needed to keep your batteries topped up.</span>
-        </div>
-
-        <div class="sec-title">Daily Electrical Loads</div>
-        <div style="overflow-x:auto;">
-          <table class="load-table">
-            <thead>
-              <tr>
-                <th>Load</th>
-                <th style="text-align:center">Power (W)</th>
-                <th style="text-align:center">Hours / Day</th>
-                <th style="text-align:right">Energy (Wh/day)</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>Telematics / Electronics</td>
-                <td style="text-align:center"><input type="number" id="loadTelW"  value="15"   min="0" oninput="S.telW  = +this.value||0; calcLoad()"></td>
-                <td style="text-align:center"><input type="number" id="loadTelH"  value="18"   min="0" max="24" step=".5" oninput="S.telH  = +this.value||0; calcLoad()"></td>
-                <td class="num-cell" id="whTel">270 Wh</td>
-              </tr>
-              <tr>
-                <td>Lift Gate</td>
-                <td style="text-align:center"><input type="number" id="loadLgW"   value="1100" min="0" oninput="S.lgW   = +this.value||0; calcLoad()"></td>
-                <td style="text-align:center"><input type="number" id="loadLgH"   value="1.5"  min="0" max="24" step=".25" oninput="S.lgH   = +this.value||0; calcLoad()"></td>
-                <td class="num-cell" id="whLg">1,650 Wh</td>
-              </tr>
-              <tr>
-                <td>Other / Parasitic Loads</td>
-                <td style="text-align:center"><input type="number" id="loadOthW"  value="10"   min="0" oninput="S.othW  = +this.value||0; calcLoad()"></td>
-                <td style="text-align:center"><input type="number" id="loadOthH"  value="5"    min="0" max="24" step=".5" oninput="S.othH  = +this.value||0; calcLoad()"></td>
-                <td class="num-cell" id="whOth">50 Wh</td>
-              </tr>
-              <tr class="total-row">
-                <td colspan="3">Total Daily Energy</td>
-                <td class="num-cell" id="whTotal">1,970 Wh</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-
-        <div class="size-box">
-          <div class="size-row"><span class="size-lbl">Total daily energy consumption</span><span class="size-val" id="szEnergy">1,970 Wh</span></div>
-          <div class="size-row"><span class="size-lbl">Minimum system size (÷ 5 peak sun hours)</span><span class="size-val" id="szMin">394 W</span></div>
-          <div class="size-row"><span class="size-lbl">Recommended size with 10% safety buffer</span><span class="size-val" id="szRec">435 W</span></div>
-        </div>
-
-        <div class="sec-title" style="margin-top:24px;">Recommended Merlin Solar System</div>
-        <div id="sysPicker"><!-- filled by calcLoad() --></div>
-
-      </div>
-      <div class="nav-btns">
-        <button class="btn btn-secondary" onclick="go(3)">&#8592; Back</button>
+        <button class="btn btn-secondary" onclick="go(1)">&#8592; Back</button>
         <button class="btn btn-accent" onclick="showResults()">View ROI Results &#9728;&#65039;</button>
       </div>
     </div>
@@ -649,45 +371,32 @@
       </div>
       <div class="card-body">
 
-        <div class="sys-banner">
-          <div class="sys-banner-icon">
-            <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
-              <rect x="1" y="2"  width="8" height="7" rx="1" fill="white" opacity=".9"/>
-              <rect x="13" y="2" width="8" height="7" rx="1" fill="white" opacity=".9"/>
-              <rect x="1" y="13" width="8" height="7" rx="1" fill="white" opacity=".9"/>
-              <rect x="13" y="13" width="8" height="7" rx="1" fill="white" opacity=".9"/>
-            </svg>
-          </div>
-          <div>
-            <div class="sys-banner-name" id="rSysName">425W Liftgate Kit</div>
-            <div class="sys-banner-sub" id="rSysSub">Recommended system for your load profile</div>
-          </div>
-          <div class="sys-banner-cost">
-            <div class="cv" id="rSysCost">$2,500</div>
-            <div class="cl">per install</div>
-          </div>
-        </div>
+        <!-- System range banner -->
+        <div id="sysBanner" style="margin-bottom:22px;"></div>
+
+        <!-- Range note -->
+        <div id="rangeNote" style="display:none;background:#fffbeb;border:1px solid #fcd34d;border-radius:10px;padding:11px 16px;font-size:13px;color:#92400e;margin-bottom:18px;"></div>
 
         <div class="metrics-grid">
           <div class="metric m-invest">
             <div class="mlbl">Total Investment</div>
-            <div class="mval" id="mInvest">$25,000</div>
-            <div class="msub" id="mInvestSub">for 10 units</div>
+            <div class="mval" id="mInvest">—</div>
+            <div class="msub" id="mInvestSub">fleet-wide</div>
           </div>
           <div class="metric m-save">
             <div class="mlbl">Annual Savings</div>
-            <div class="mval" id="mSavings">$12,625</div>
+            <div class="mval" id="mSavings">—</div>
             <div class="msub">across your fleet</div>
           </div>
           <div class="metric m-pay">
             <div class="mlbl">Payback Period</div>
-            <div class="mval" id="mPayback">2.0</div>
-            <div class="msub">years</div>
+            <div class="mval" id="mPayback">—</div>
+            <div class="msub" id="mPaybackSub">years</div>
           </div>
           <div class="metric m-roi">
             <div class="mlbl">5-Year ROI</div>
-            <div class="mval" id="mROI">2.5&times;</div>
-            <div class="msub">return on investment</div>
+            <div class="mval" id="mROI">—</div>
+            <div class="msub" id="mROISub">return on investment</div>
           </div>
         </div>
 
@@ -699,18 +408,12 @@
         <div class="chart-card">
           <div class="chart-title">Detailed Cost Analysis</div>
           <table class="brkdn-table">
-            <thead>
-              <tr>
-                <th>Cost Category</th>
-                <th class="ra">Annual Savings</th>
-                <th class="ra">5-Year Total</th>
-              </tr>
-            </thead>
+            <thead><tr><th>Cost Category</th><th class="ra">Annual Savings</th><th class="ra">5-Year Total</th></tr></thead>
             <tbody id="brkdnBody"></tbody>
           </table>
         </div>
 
-        <div style="display:flex; gap:12px; flex-wrap:wrap;" class="no-print">
+        <div style="display:flex;gap:12px;flex-wrap:wrap;" class="no-print">
           <button class="btn btn-secondary" onclick="startOver()">&#8592; Start Over</button>
           <button class="btn btn-primary" onclick="window.print()">&#128438; Print Report</button>
         </div>
@@ -720,242 +423,428 @@
 
 </div><!-- /container -->
 
-<!-- ═══════════════════════════════ ADMIN MODAL ═══════════════════════════════ -->
+<!-- ══════════════════ ADMIN MODAL ══════════════════ -->
 <div class="modal-overlay" id="adminModal" onclick="if(event.target===this)closeAdmin()">
   <div class="modal">
     <div class="modal-hdr">
-      <h3>&#9881; Admin — Manage Solar Systems</h3>
+      <h3>&#9881; Admin Settings</h3>
       <button class="modal-close" onclick="closeAdmin()">&times;</button>
     </div>
     <div class="modal-body">
-      <p style="font-size:13px; color:var(--muted); margin-bottom:16px;">
-        Configure the Merlin Solar systems available for selection. The calculator will automatically recommend the best-fit system based on the customer's daily load profile.
-      </p>
-      <table class="admin-table" id="adminTable">
-        <thead><tr><th>System Name</th><th>Wattage</th><th>Cost / Install</th><th></th></tr></thead>
-        <tbody id="adminBody"></tbody>
-      </table>
-      <div class="add-form">
-        <div class="add-form-title">&#43; Add New System</div>
-        <div class="add-form-grid">
-          <div>
-            <label style="font-size:12px; display:block; margin-bottom:4px;">System Name</label>
-            <input type="text" id="newName" placeholder="e.g. 200W Starter Kit">
+
+      <!-- Section 1: Cost Defaults -->
+      <div class="admin-sec">
+        <div class="admin-sec-title">&#128176; Cost Defaults</div>
+        <div class="admin-grid">
+          <div class="admin-field">
+            <label>Battery Cost per Unit</label>
+            <div class="inp-wrap"><span class="inp-pre">$</span>
+              <input type="number" class="pre" id="aBatteryCost" min="0"
+                oninput="ADMIN.batteryCost=+this.value||0; saveAdmin(); updateHints()">
+            </div>
           </div>
-          <div>
-            <label style="font-size:12px; display:block; margin-bottom:4px;">Watts</label>
-            <input type="number" id="newWatts" placeholder="200" min="0">
+          <div class="admin-field">
+            <label>Battery Replacement Time</label>
+            <div class="inp-wrap"><span class="inp-suf">hrs</span>
+              <input type="number" class="suf" id="aBattReplTime" min="0" step="0.25"
+                oninput="ADMIN.battReplTime=+this.value||0; saveAdmin(); updateHints()">
+            </div>
           </div>
-          <div>
-            <label style="font-size:12px; display:block; margin-bottom:4px;">Cost / Install ($)</label>
-            <input type="number" id="newCost" placeholder="1500" min="0">
+          <div class="admin-field">
+            <label>Technician Labour Rate</label>
+            <div class="inp-wrap"><span class="inp-pre">$</span><span class="inp-suf">/hr</span>
+              <input type="number" class="both" id="aLaborRate" min="0"
+                oninput="ADMIN.laborRate=+this.value||0; saveAdmin(); updateHints()">
+            </div>
+            <span class="hint">US fleet average: $140/hr</span>
           </div>
-          <button class="btn btn-primary" onclick="addSystem()">Add</button>
+          <div class="admin-field">
+            <label>Service Call Fee per Event</label>
+            <div class="inp-wrap"><span class="inp-pre">$</span>
+              <input type="number" class="pre" id="aServiceCallFee" min="0"
+                oninput="ADMIN.serviceCallFee=+this.value||0; saveAdmin(); updateHints()">
+            </div>
+            <span class="hint">US average: $1,500</span>
+          </div>
+          <div class="admin-field">
+            <label>Jump Start Fee per Event</label>
+            <div class="inp-wrap"><span class="inp-pre">$</span>
+              <input type="number" class="pre" id="aJumpStartFee" min="0"
+                oninput="ADMIN.jumpStartFee=+this.value||0; saveAdmin(); updateHints()">
+            </div>
+            <span class="hint">US average: $125</span>
+          </div>
+          <div class="admin-field">
+            <label>Jump Start Labour Time</label>
+            <div class="inp-wrap"><span class="inp-suf">hrs</span>
+              <input type="number" class="suf" id="aJumpStartTime" min="0" step="0.25"
+                oninput="ADMIN.jumpStartTime=+this.value||0; saveAdmin(); updateHints()">
+            </div>
+          </div>
         </div>
       </div>
-    </div>
+
+      <!-- Section 2: Application Repair Costs -->
+      <div class="admin-sec">
+        <div class="admin-sec-title">&#128295; Annual Repair Costs by Application</div>
+        <p style="font-size:12.5px;color:var(--muted);margin-bottom:14px;">Fleet-wide annual totals. Added to savings calculation when a customer selects the corresponding application in Step 1.</p>
+        <div class="admin-grid three">
+          <div class="admin-field">
+            <label>Lift Gate Repairs ($/yr)</label>
+            <div class="inp-wrap"><span class="inp-pre">$</span>
+              <input type="number" class="pre" id="aLiftGateAnnual" min="0"
+                oninput="ADMIN.liftGateAnnual=+this.value||0; saveAdmin()">
+            </div>
+            <span class="hint">Switches, solenoids, power units</span>
+          </div>
+          <div class="admin-field">
+            <label>Reefer Repairs ($/yr)</label>
+            <div class="inp-wrap"><span class="inp-pre">$</span>
+              <input type="number" class="pre" id="aReeferAnnual" min="0"
+                oninput="ADMIN.reeferAnnual=+this.value||0; saveAdmin()">
+            </div>
+            <span class="hint">Refrigeration unit components</span>
+          </div>
+          <div class="admin-field">
+            <label>APU Repairs ($/yr)</label>
+            <div class="inp-wrap"><span class="inp-pre">$</span>
+              <input type="number" class="pre" id="aApuAnnual" min="0"
+                oninput="ADMIN.apuAnnual=+this.value||0; saveAdmin()">
+            </div>
+            <span class="hint">Auxiliary power unit service</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 3: System Sizing & Range -->
+      <div class="admin-sec">
+        <div class="admin-sec-title">&#9728; System Sizing &amp; Cost Range</div>
+        <p style="font-size:12.5px;color:var(--muted);margin-bottom:14px;">Define the typical daily electrical loads to compute the recommended solar system wattage. Set the lower/upper bounds to generate a cost range shown to customers.</p>
+
+        <table class="load-table">
+          <thead>
+            <tr>
+              <th>Load</th>
+              <th style="text-align:center">Power (W)</th>
+              <th style="text-align:center">Hours / Day</th>
+              <th style="text-align:right">Energy (Wh/day)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Telematics / Electronics</td>
+              <td style="text-align:center"><input type="number" id="aTelW" min="0" oninput="ADMIN.telW=+this.value||0; saveAdmin(); calcAdminSize()"></td>
+              <td style="text-align:center"><input type="number" id="aTelH" min="0" max="24" step=".5" oninput="ADMIN.telH=+this.value||0; saveAdmin(); calcAdminSize()"></td>
+              <td class="lnum" id="aTelWh">—</td>
+            </tr>
+            <tr>
+              <td>Lift Gate</td>
+              <td style="text-align:center"><input type="number" id="aLgW" min="0" oninput="ADMIN.lgW=+this.value||0; saveAdmin(); calcAdminSize()"></td>
+              <td style="text-align:center"><input type="number" id="aLgH" min="0" max="24" step=".25" oninput="ADMIN.lgH=+this.value||0; saveAdmin(); calcAdminSize()"></td>
+              <td class="lnum" id="aLgWh">—</td>
+            </tr>
+            <tr>
+              <td>Other / Parasitic Loads</td>
+              <td style="text-align:center"><input type="number" id="aOthW" min="0" oninput="ADMIN.othW=+this.value||0; saveAdmin(); calcAdminSize()"></td>
+              <td style="text-align:center"><input type="number" id="aOthH" min="0" max="24" step=".5" oninput="ADMIN.othH=+this.value||0; saveAdmin(); calcAdminSize()"></td>
+              <td class="lnum" id="aOthWh">—</td>
+            </tr>
+            <tr class="total-row">
+              <td colspan="3">Total Daily Energy</td>
+              <td class="lnum" id="aTotalWh">—</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px;">
+          <div class="admin-field">
+            <label>Lower Bound (% below recommended)</label>
+            <div class="inp-wrap"><span class="inp-suf">%</span>
+              <input type="number" class="suf" id="aLowerPct" min="0" max="50"
+                oninput="ADMIN.lowerPct=+this.value||0; saveAdmin(); calcAdminSize()">
+            </div>
+          </div>
+          <div class="admin-field">
+            <label>Upper Bound (% above recommended)</label>
+            <div class="inp-wrap"><span class="inp-suf">%</span>
+              <input type="number" class="suf" id="aUpperPct" min="0" max="100"
+                oninput="ADMIN.upperPct=+this.value||0; saveAdmin(); calcAdminSize()">
+            </div>
+          </div>
+        </div>
+
+        <div class="size-result" id="sizeResult">
+          <div class="size-result-row"><span class="sr-lbl">Loading…</span><span class="sr-val"></span></div>
+        </div>
+      </div>
+
+      <!-- Section 4: Solar Systems -->
+      <div class="admin-sec">
+        <div class="admin-sec-title">&#9889; Solar Systems</div>
+        <p style="font-size:12.5px;color:var(--muted);margin-bottom:14px;">Systems are matched to the wattage range above to determine the investment cost range shown to customers. Add multiple systems at different wattage tiers to show a meaningful range.</p>
+        <table class="admin-sys-table">
+          <thead><tr><th>System Name</th><th>Wattage</th><th>Cost / Install</th><th></th></tr></thead>
+          <tbody id="adminSysBody"></tbody>
+        </table>
+        <div class="add-form">
+          <div class="add-form-title">+ Add New System</div>
+          <div class="add-form-grid">
+            <div>
+              <label style="font-size:12px;display:block;margin-bottom:4px;">System Name</label>
+              <input type="text" id="newName" placeholder="e.g. 600W Premium Kit">
+            </div>
+            <div>
+              <label style="font-size:12px;display:block;margin-bottom:4px;">Watts</label>
+              <input type="number" id="newWatts" placeholder="600" min="0">
+            </div>
+            <div>
+              <label style="font-size:12px;display:block;margin-bottom:4px;">Cost / Install ($)</label>
+              <input type="number" id="newCost" placeholder="3500" min="0">
+            </div>
+            <button class="btn btn-primary" onclick="addSystem()">Add</button>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /modal-body -->
   </div>
 </div>
 
-<!-- ═══════════════════════════════ SCRIPT ═══════════════════════════════ -->
+<!-- ══════════════════ SCRIPT ══════════════════ -->
 <script>
-// ── State ──────────────────────────────────────────────────────────────────
+// ── User inputs ────────────────────────────────────────────────────────────
 const S = {
   companyName: '',
   fleetSize: 10,
-  // Battery
-  batteriesPerTrailer: 1,
-  batteryCost: 700,
+  problems: ['battery'],
   battReplPerYear: 1,
-  battReplTime: 0.5,
-  laborRate: 140,
-  // Service
-  liftGateAnnual: 2500,
-  serviceCallFee: 1500,
   serviceCallsPerYear: 5,
-  jumpStartFee: 125,
   jumpStartsPerYear: 7,
-  jumpStartTime: 1,
-  // Load
-  telW: 15, telH: 18,
-  lgW: 1100, lgH: 1.5,
-  othW: 10, othH: 5,
 };
 
-let systems = loadSystems();
-let pickedSystem = null;
-let chart = null;
-let currentStep = 1;
+// ── Admin settings (persisted to localStorage) ─────────────────────────────
+function defaultAdmin() {
+  return {
+    batteryCost: 700, battReplTime: 0.5, laborRate: 140,
+    serviceCallFee: 1500,
+    jumpStartFee: 125, jumpStartTime: 1,
+    liftGateAnnual: 2500, reeferAnnual: 1500, apuAnnual: 2000,
+    telW: 15, telH: 18,
+    lgW: 1100, lgH: 1.5,
+    othW: 10, othH: 5,
+    lowerPct: 5, upperPct: 10,
+    systems: [{ id: 1, name: '425W Liftgate Kit', wattage: 425, costPerInstall: 2500 }]
+  };
+}
 
-function loadSystems() {
+let ADMIN = (() => {
   try {
-    const s = localStorage.getItem('merlinSystems');
-    if (s) return JSON.parse(s);
+    const stored = localStorage.getItem('merlinAdmin');
+    if (stored) return { ...defaultAdmin(), ...JSON.parse(stored) };
   } catch(e) {}
-  return [{ id: 1, name: '425W Liftgate Kit', wattage: 425, costPerInstall: 2500 }];
-}
+  return defaultAdmin();
+})();
 
-function saveSystems() {
-  localStorage.setItem('merlinSystems', JSON.stringify(systems));
-}
+function saveAdmin() { localStorage.setItem('merlinAdmin', JSON.stringify(ADMIN)); }
+
+// ── Formatting helpers ─────────────────────────────────────────────────────
+const fmt  = n => '$' + Math.round(n).toLocaleString('en-US');
+const fmtR = (lo, hi) => (lo === hi) ? fmt(lo) : `${fmt(lo)} – ${fmt(hi)}`;
 
 // ── Calculations ───────────────────────────────────────────────────────────
-const fmt = n => '$' + Math.round(n).toLocaleString('en-US');
-
-function calcBattery()      { return (S.batteryCost * S.battReplPerYear + S.laborRate * S.battReplTime) * S.fleetSize; }
-function calcLiftGate()     { return S.liftGateAnnual; }
-function calcServiceCalls() { return S.serviceCallFee * S.serviceCallsPerYear; }
-function calcJumpStarts()   { return (S.jumpStartFee + S.jumpStartTime * S.laborRate) * S.jumpStartsPerYear; }
-function calcTotalSavings() { return calcBattery() + calcLiftGate() + calcServiceCalls() + calcJumpStarts(); }
-
-function calcSystemSize() {
-  const totalWh = S.telW * S.telH + S.lgW * S.lgH + S.othW * S.othH;
-  const minW = totalWh / 5;
-  // MROUND equivalent: round to nearest 5
-  const recW = Math.round(minW * 1.1 / 5) * 5;
-  return { totalWh, minW, recW };
+function calcBattery()  {
+  if (!S.problems.includes('battery')) return 0;
+  return (ADMIN.batteryCost * S.battReplPerYear + ADMIN.laborRate * ADMIN.battReplTime) * S.fleetSize;
+}
+function calcLiftGate() { return S.problems.includes('liftgate') ? ADMIN.liftGateAnnual : 0; }
+function calcReefer()   { return S.problems.includes('reefer')   ? ADMIN.reeferAnnual   : 0; }
+function calcAPU()      { return S.problems.includes('apu')      ? ADMIN.apuAnnual      : 0; }
+function calcServiceCalls() { return ADMIN.serviceCallFee * S.serviceCallsPerYear; }
+function calcJumpStarts()   { return (ADMIN.jumpStartFee + ADMIN.jumpStartTime * ADMIN.laborRate) * S.jumpStartsPerYear; }
+function calcTotalSavings() {
+  return calcBattery() + calcLiftGate() + calcReefer() + calcAPU() + calcServiceCalls() + calcJumpStarts();
 }
 
-function getBestSystem() {
-  const { recW } = calcSystemSize();
-  const sorted = [...systems].sort((a, b) => a.wattage - b.wattage);
-  return sorted.find(s => s.wattage >= recW) || sorted[sorted.length - 1] || null;
+function calcSizeRange() {
+  const totalWh = ADMIN.telW * ADMIN.telH + ADMIN.lgW * ADMIN.lgH + ADMIN.othW * ADMIN.othH;
+  const minW    = totalWh / 5;                                       // ÷ 5 peak sun hours
+  const recW    = Math.round(minW * 1.1 / 5) * 5;                   // +10% buffer, MROUND to 5W
+  const lowerW  = Math.max(5, Math.round(recW * (1 - ADMIN.lowerPct / 100) / 5) * 5);
+  const upperW  = Math.round(recW * (1 + ADMIN.upperPct / 100) / 5) * 5;
+  return { totalWh, minW, recW, lowerW, upperW };
 }
 
-// ── Live preview updates ───────────────────────────────────────────────────
-function refreshPreviews() {
-  document.getElementById('prevBattery').textContent = fmt(calcBattery());
-  document.getElementById('prevService').textContent = fmt(calcLiftGate() + calcServiceCalls() + calcJumpStarts());
+function getCostRange() {
+  const { lowerW, upperW } = calcSizeRange();
+  const sorted = [...ADMIN.systems].sort((a, b) => a.wattage - b.wattage);
+  if (!sorted.length) return null;
+  const minSys = sorted.find(s => s.wattage >= lowerW) || sorted[sorted.length - 1];
+  const maxSys = sorted.find(s => s.wattage >= upperW) || sorted[sorted.length - 1];
+  return { minSys, maxSys, isSingle: minSys.id === maxSys.id };
 }
 
-function calcLoad() {
-  const tel  = S.telW  * S.telH;
-  const lg   = S.lgW   * S.lgH;
-  const oth  = S.othW  * S.othH;
-  const total = tel + lg + oth;
-
-  document.getElementById('whTel').textContent   = tel.toLocaleString()   + ' Wh';
-  document.getElementById('whLg').textContent    = lg.toLocaleString()    + ' Wh';
-  document.getElementById('whOth').textContent   = oth.toLocaleString()   + ' Wh';
-  document.getElementById('whTotal').textContent = total.toLocaleString() + ' Wh';
-
-  const { totalWh, minW, recW } = calcSystemSize();
-  document.getElementById('szEnergy').textContent = totalWh.toLocaleString() + ' Wh';
-  document.getElementById('szMin').textContent    = Math.round(minW) + ' W';
-  document.getElementById('szRec').textContent    = recW + ' W';
-
-  renderSysPicker();
-}
-
-function renderSysPicker() {
-  const rec = getBestSystem();
-  const el  = document.getElementById('sysPicker');
-  if (!rec) {
-    el.innerHTML = '<div style="color:#dc2626;background:#fee2e2;padding:14px;border-radius:8px;">No systems configured. Open the Admin panel to add one.</div>';
-    pickedSystem = null;
-    return;
+// ── Problem toggle (step 1) ────────────────────────────────────────────────
+function toggleProblem(cb) {
+  if (cb.checked) {
+    if (!S.problems.includes(cb.value)) S.problems.push(cb.value);
+  } else {
+    S.problems = S.problems.filter(p => p !== cb.value);
   }
-  const { recW } = calcSystemSize();
-  const fits = rec.wattage >= recW;
-  pickedSystem = rec;
+}
 
-  let overrideHtml = '';
-  if (systems.length > 1) {
-    overrideHtml = `
-      <div style="margin-top:12px;">
-        <label style="font-size:13px;font-weight:600;display:block;margin-bottom:6px;">Override system selection:</label>
-        <select onchange="overrideSys(this.value)" style="width:100%;">
-          ${systems.map(s => `<option value="${s.id}"${s.id===rec.id?' selected':''}>${s.name} — ${s.wattage}W — ${fmt(s.costPerInstall)}/install</option>`).join('')}
-        </select>
+// ── Step 2 refresh ─────────────────────────────────────────────────────────
+function refreshStep2() {
+  // Show/hide battery input based on selection
+  document.getElementById('batterySection').style.display =
+    S.problems.includes('battery') ? '' : 'none';
+
+  // Update live hints from admin values
+  updateHints();
+
+  // Repair cost summary (lift gate / reefer / APU lump sums)
+  const repairs = [
+    { key: 'liftgate', label: 'Lift Gate Repairs',   val: ADMIN.liftGateAnnual },
+    { key: 'reefer',   label: 'Reefer Repairs',      val: ADMIN.reeferAnnual   },
+    { key: 'apu',      label: 'APU Repairs',         val: ADMIN.apuAnnual      },
+  ].filter(r => S.problems.includes(r.key));
+
+  const div = document.getElementById('repairSummary');
+  if (repairs.length) {
+    div.innerHTML = `
+      <div style="background:#fafafa;border:1px solid var(--border);border-radius:10px;padding:12px 16px;margin-top:20px;">
+        <div style="font-size:11.5px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;">Repair costs included from your selections</div>
+        ${repairs.map(r => `
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:1px solid var(--border);font-size:13.5px;">
+            <span>&#10003; ${r.label}</span>
+            <span style="font-weight:600;">${fmt(r.val)}<span style="font-weight:400;color:var(--muted);font-size:12px;">/yr fleet total</span></span>
+          </div>`).join('')}
+        <div style="font-size:11.5px;color:var(--muted);margin-top:7px;">Fleet-wide annual cost estimates — adjustable in Admin settings.</div>
       </div>`;
+  } else {
+    div.innerHTML = '';
   }
 
-  el.innerHTML = `
-    <div class="sys-pick ${fits?'ok':'warn'}">
-      <div style="font-size:28px;">${fits?'✅':'⚠️'}</div>
-      <div class="sys-pick-info">
-        <div class="sys-pick-name">${rec.name}</div>
-        <div class="sys-pick-sub">${rec.wattage}W — ${fits ? 'meets' : 'slightly under'} the ${recW}W recommended size</div>
-      </div>
-      <div class="sys-pick-cost">
-        <div class="pv">${fmt(rec.costPerInstall)}</div>
-        <div class="pl">per install</div>
-      </div>
-    </div>
-    ${overrideHtml}
-  `;
+  refreshPreview();
 }
 
-function overrideSys(id) {
-  pickedSystem = systems.find(s => s.id == id) || pickedSystem;
+function refreshPreview() {
+  document.getElementById('prevTotal').textContent = fmt(calcTotalSavings());
+}
+
+function updateHints() {
+  const h1 = document.getElementById('battCostHint');
+  const h2 = document.getElementById('serviceHint');
+  const h3 = document.getElementById('jumpHint');
+  if (h1) h1.textContent = `${fmt(ADMIN.batteryCost)}/unit · ${ADMIN.battReplTime} hr labour @ ${fmt(ADMIN.laborRate)}/hr (Admin defaults)`;
+  if (h2) h2.textContent = `@ ${fmt(ADMIN.serviceCallFee)} per call (Admin)`;
+  if (h3) h3.textContent = `@ ${fmt(ADMIN.jumpStartFee)} + ${ADMIN.jumpStartTime} hr @ ${fmt(ADMIN.laborRate)}/hr (Admin)`;
 }
 
 // ── Navigation ─────────────────────────────────────────────────────────────
 function go(n) {
-  if (n === 1 && S.fleetSize < 1) { alert('Please enter a fleet size of at least 1.'); return; }
-
+  if (n >= 2 && S.fleetSize < 1) { alert('Please enter a fleet size of at least 1.'); return; }
   document.querySelector('.step.active').classList.remove('active');
   document.getElementById('step-' + n).classList.add('active');
-  currentStep = n;
 
-  // Update progress circles
-  for (let i = 1; i <= 4; i++) {
+  // Update 2-step progress
+  for (let i = 1; i <= 2; i++) {
     const c = document.getElementById('sc' + i);
     const l = document.getElementById('sl' + i);
-    c.className = 'step-circle' + (i < n ? ' done' : i === n ? ' active' : '');
+    c.className  = 'step-circle' + (i < n ? ' done' : i === n ? ' active' : '');
     c.textContent = i < n ? '✓' : i;
-    l.className   = 'step-lbl'   + (i === n ? ' active' : '');
-    if (i < 4) document.getElementById('cn' + i).className = 'connector' + (i < n ? ' done' : '');
+    l.className  = 'step-lbl' + (i === n ? ' active' : '');
+    if (i < 2) document.getElementById('cn' + i).className = 'connector' + (i < n ? ' done' : '');
   }
 
-  if (n === 4) calcLoad();
-  refreshPreviews();
+  if (n === 2) refreshStep2();
   window.scrollTo(0, 0);
 }
 
-// ── Results ────────────────────────────────────────────────────────────────
+// ── Show results ───────────────────────────────────────────────────────────
 function showResults() {
-  const sys = pickedSystem || getBestSystem();
-  if (!sys) { alert('Please add at least one solar system via the Admin panel first.'); return; }
-  pickedSystem = sys;
+  const cr = getCostRange();
+  if (!cr) { alert('No solar systems configured. Open the Admin panel to add one.'); return; }
 
   const battery      = calcBattery();
   const liftGate     = calcLiftGate();
+  const reefer       = calcReefer();
+  const apu          = calcAPU();
   const serviceCalls = calcServiceCalls();
   const jumpStarts   = calcJumpStarts();
-  const totalSavings = battery + liftGate + serviceCalls + jumpStarts;
-  const totalInvest  = sys.costPerInstall * S.fleetSize;
-  const payback      = Math.round(totalInvest / totalSavings * 10) / 10;
-  const roi5yr       = Math.round(totalSavings * 5 / totalInvest * 10) / 10;
+  const totalSavings = battery + liftGate + reefer + apu + serviceCalls + jumpStarts;
 
-  // Swap visible step
+  const minInvest  = cr.minSys.costPerInstall * S.fleetSize;
+  const maxInvest  = cr.maxSys.costPerInstall * S.fleetSize;
+  // Lower cost → shorter payback, higher ROI
+  const minPayback = +(minInvest / totalSavings).toFixed(1);
+  const maxPayback = +(maxInvest / totalSavings).toFixed(1);
+  const minROI     = +(totalSavings * 5 / maxInvest).toFixed(1);
+  const maxROI     = +(totalSavings * 5 / minInvest).toFixed(1);
+  const { lowerW, upperW } = calcSizeRange();
+
+  // Swap to results
   document.querySelector('.step.active').classList.remove('active');
   document.getElementById('step-results').classList.add('active');
   document.getElementById('progressWrapper').style.display = 'none';
 
-  // Fill header
-  const co = S.companyName ? ' for ' + S.companyName : '';
+  // Subtitle
+  const co = S.companyName ? ` for ${S.companyName}` : '';
   document.getElementById('rSub').textContent = `${S.fleetSize}-unit fleet${co} — Merlin Solar investment analysis.`;
 
   // System banner
-  document.getElementById('rSysName').textContent = sys.name;
-  document.getElementById('rSysSub').textContent  = `${sys.wattage}W system — recommended for your load profile`;
-  document.getElementById('rSysCost').textContent  = fmt(sys.costPerInstall);
+  document.getElementById('sysBanner').innerHTML = `
+    <div style="background:linear-gradient(135deg,var(--primary) 0%,var(--primary-light) 100%);color:#fff;border-radius:12px;padding:16px 22px;display:flex;align-items:center;gap:16px;">
+      <div style="font-size:30px;">☀️</div>
+      <div style="flex:1;">
+        <div style="font-size:15px;font-weight:700;margin-bottom:4px;">
+          ${cr.isSingle ? cr.minSys.name : `${cr.minSys.name} – ${cr.maxSys.name}`}
+        </div>
+        <div style="font-size:12.5px;opacity:.82;">Recommended system size: <strong>${lowerW}W – ${upperW}W</strong></div>
+      </div>
+      <div style="text-align:right;flex-shrink:0;">
+        <div style="font-size:20px;font-weight:800;color:var(--accent);">
+          ${cr.isSingle ? fmt(cr.minSys.costPerInstall) : `${fmt(cr.minSys.costPerInstall)} – ${fmt(cr.maxSys.costPerInstall)}`}
+        </div>
+        <div style="font-size:11.5px;opacity:.7;">per install</div>
+      </div>
+    </div>`;
+
+  // Range note
+  const rn = document.getElementById('rangeNote');
+  if (!cr.isSingle) {
+    rn.style.display = '';
+    rn.textContent = `Ranges shown reflect a ${lowerW}W–${upperW}W system size window (−${ADMIN.lowerPct}% / +${ADMIN.upperPct}% around recommended size). Lower investment = shorter payback; higher investment = more headroom.`;
+  } else {
+    rn.style.display = 'none';
+  }
 
   // Metrics
-  document.getElementById('mInvest').textContent    = fmt(totalInvest);
-  document.getElementById('mInvestSub').textContent = `${S.fleetSize} units × ${fmt(sys.costPerInstall)}`;
+  document.getElementById('mInvest').textContent    = fmtR(minInvest, maxInvest);
+  document.getElementById('mInvestSub').textContent = `${S.fleetSize} units, fleet-wide`;
   document.getElementById('mSavings').textContent   = fmt(totalSavings);
-  document.getElementById('mPayback').textContent   = payback;
-  document.getElementById('mROI').textContent       = roi5yr + '×';
 
-  // Breakdown table
+  if (cr.isSingle) {
+    document.getElementById('mPayback').textContent = `${minPayback}`;
+    document.getElementById('mPaybackSub').textContent = 'years';
+    document.getElementById('mROI').textContent     = `${minROI}×`;
+    document.getElementById('mROISub').textContent  = 'return on investment';
+  } else {
+    document.getElementById('mPayback').textContent = `${minPayback} – ${maxPayback}`;
+    document.getElementById('mPaybackSub').textContent = 'years (range)';
+    document.getElementById('mROI').textContent     = `${minROI}× – ${maxROI}×`;
+    document.getElementById('mROISub').textContent  = '5-year ROI (range)';
+  }
+
+  // Breakdown table — only show non-zero rows
   const rows = [
-    ['Battery Replacement',   battery],
-    ['Lift Gate Repairs',      liftGate],
-    ['Service Calls',          serviceCalls],
-    ['Jump Starts',            jumpStarts],
-  ];
+    ['Battery Replacement', battery],
+    ['Lift Gate Repairs',   liftGate],
+    ['Reefer Repairs',      reefer],
+    ['APU Repairs',         apu],
+    ['Service Calls',       serviceCalls],
+    ['Jump Starts',         jumpStarts],
+  ].filter(([, v]) => v > 0);
+
   document.getElementById('brkdnBody').innerHTML =
     rows.map(([lbl, v]) => `
       <tr>
@@ -969,31 +858,30 @@ function showResults() {
       <td class="ra">${fmt(totalSavings * 5)}</td>
     </tr>`;
 
-  // Chart
-  if (chart) chart.destroy();
-  chart = new Chart(document.getElementById('savingsChart').getContext('2d'), {
-    type: 'bar',
-    data: {
-      labels: ['Battery\nReplacement', 'Lift Gate\nRepairs', 'Service\nCalls', 'Jump\nStarts'],
-      datasets: [{
-        label: 'Annual Savings ($)',
-        data: [battery, liftGate, serviceCalls, jumpStarts],
-        backgroundColor: ['#1e40af', '#065f46', '#92400e', '#7c3aed'],
-        borderRadius: 7,
-        borderSkipped: false,
-      }]
-    },
-    options: {
-      responsive: true,
-      plugins: {
-        legend: { display: false },
-        tooltip: { callbacks: { label: ctx => ' $' + Math.round(ctx.raw).toLocaleString() } }
+  // Chart — only non-zero categories
+  if (window._chart) window._chart.destroy();
+  const colors = { 'Battery Replacement':'#1e40af', 'Lift Gate Repairs':'#065f46', 'Reefer Repairs':'#0e7490', 'APU Repairs':'#7c3aed', 'Service Calls':'#92400e', 'Jump Starts':'#b45309' };
+  window._chart = new Chart(
+    document.getElementById('savingsChart').getContext('2d'), {
+      type: 'bar',
+      data: {
+        labels: rows.map(r => r[0]),
+        datasets: [{
+          label: 'Annual Savings ($)',
+          data: rows.map(r => r[1]),
+          backgroundColor: rows.map(r => colors[r[0]] || '#64748b'),
+          borderRadius: 7, borderSkipped: false,
+        }]
       },
-      scales: {
-        y: { beginAtZero: true, ticks: { callback: v => '$' + v.toLocaleString() } }
+      options: {
+        responsive: true,
+        plugins: {
+          legend: { display: false },
+          tooltip: { callbacks: { label: ctx => ' $' + Math.round(ctx.raw).toLocaleString() } }
+        },
+        scales: { y: { beginAtZero: true, ticks: { callback: v => '$' + v.toLocaleString() } } }
       }
-    }
-  });
+    });
 
   window.scrollTo(0, 0);
 }
@@ -1002,35 +890,77 @@ function startOver() {
   document.querySelector('.step.active').classList.remove('active');
   document.getElementById('step-1').classList.add('active');
   document.getElementById('progressWrapper').style.display = '';
-  currentStep = 1;
-  for (let i = 1; i <= 4; i++) {
-    document.getElementById('sc' + i).className = 'step-circle' + (i === 1 ? ' active' : '');
+  for (let i = 1; i <= 2; i++) {
+    document.getElementById('sc' + i).className  = 'step-circle' + (i === 1 ? ' active' : '');
     document.getElementById('sc' + i).textContent = i;
-    document.getElementById('sl' + i).className   = 'step-lbl'   + (i === 1 ? ' active' : '');
-    if (i < 4) document.getElementById('cn' + i).className = 'connector';
+    document.getElementById('sl' + i).className  = 'step-lbl'    + (i === 1 ? ' active' : '');
+    if (i < 2) document.getElementById('cn' + i).className = 'connector';
   }
   window.scrollTo(0, 0);
 }
 
-// ── Admin ──────────────────────────────────────────────────────────────────
+// ── Admin panel ────────────────────────────────────────────────────────────
 function openAdmin() {
-  renderAdminTable();
+  // Populate all fields from ADMIN state
+  const set = (id, val) => { const el = document.getElementById(id); if (el) el.value = val; };
+  set('aBatteryCost',    ADMIN.batteryCost);
+  set('aBattReplTime',   ADMIN.battReplTime);
+  set('aLaborRate',      ADMIN.laborRate);
+  set('aServiceCallFee', ADMIN.serviceCallFee);
+  set('aJumpStartFee',   ADMIN.jumpStartFee);
+  set('aJumpStartTime',  ADMIN.jumpStartTime);
+  set('aLiftGateAnnual', ADMIN.liftGateAnnual);
+  set('aReeferAnnual',   ADMIN.reeferAnnual);
+  set('aApuAnnual',      ADMIN.apuAnnual);
+  set('aTelW',  ADMIN.telW);  set('aTelH',  ADMIN.telH);
+  set('aLgW',   ADMIN.lgW);   set('aLgH',   ADMIN.lgH);
+  set('aOthW',  ADMIN.othW);  set('aOthH',  ADMIN.othH);
+  set('aLowerPct', ADMIN.lowerPct);
+  set('aUpperPct', ADMIN.upperPct);
+  renderAdminSystems();
+  calcAdminSize();
   document.getElementById('adminModal').style.display = 'flex';
 }
 
 function closeAdmin() {
   document.getElementById('adminModal').style.display = 'none';
-  if (currentStep === 4) calcLoad();
+  updateHints();          // refresh step-2 hints with any updated values
 }
 
-function renderAdminTable() {
-  document.getElementById('adminBody').innerHTML = systems.map(s => `
-    <tr>
-      <td>${s.name}</td>
-      <td>${s.wattage}W</td>
-      <td>${fmt(s.costPerInstall)}</td>
-      <td><button class="btn btn-danger btn-sm" onclick="deleteSys(${s.id})">Delete</button></td>
-    </tr>`).join('');
+function calcAdminSize() {
+  const tel   = ADMIN.telW * ADMIN.telH;
+  const lg    = ADMIN.lgW  * ADMIN.lgH;
+  const oth   = ADMIN.othW * ADMIN.othH;
+  const total = tel + lg + oth;
+
+  const set = (id, txt) => { const el = document.getElementById(id); if (el) el.textContent = txt; };
+  set('aTelWh',   tel.toLocaleString()   + ' Wh');
+  set('aLgWh',    lg.toLocaleString()    + ' Wh');
+  set('aOthWh',   oth.toLocaleString()   + ' Wh');
+  set('aTotalWh', total.toLocaleString() + ' Wh');
+
+  const { minW, recW, lowerW, upperW } = calcSizeRange();
+  const cr = getCostRange();
+  const costLine = cr
+    ? `<div class="size-result-row"><span class="sr-lbl">Mapped install cost range</span><span class="sr-val">${cr.isSingle ? fmt(cr.minSys.costPerInstall) : `${fmt(cr.minSys.costPerInstall)} – ${fmt(cr.maxSys.costPerInstall)}`}</span></div>`
+    : '';
+
+  document.getElementById('sizeResult').innerHTML = `
+    <div class="size-result-row"><span class="sr-lbl">Min system size (÷ 5 peak sun hrs)</span><span class="sr-val">${Math.round(minW)} W</span></div>
+    <div class="size-result-row"><span class="sr-lbl">Recommended size (+10% buffer)</span><span class="sr-val">${recW} W</span></div>
+    <div class="size-result-row"><span class="sr-lbl">System range (−${ADMIN.lowerPct}% / +${ADMIN.upperPct}%)</span><span class="sr-val">${lowerW} W – ${upperW} W</span></div>
+    ${costLine}`;
+}
+
+function renderAdminSystems() {
+  document.getElementById('adminSysBody').innerHTML =
+    [...ADMIN.systems].sort((a,b) => a.wattage - b.wattage).map(s => `
+      <tr>
+        <td>${s.name}</td>
+        <td>${s.wattage}W</td>
+        <td>${fmt(s.costPerInstall)}</td>
+        <td><button class="btn btn-danger btn-sm" onclick="deleteSys(${s.id})">Delete</button></td>
+      </tr>`).join('');
 }
 
 function addSystem() {
@@ -1038,24 +968,26 @@ function addSystem() {
   const watts = parseFloat(document.getElementById('newWatts').value);
   const cost  = parseFloat(document.getElementById('newCost').value);
   if (!name || !watts || !cost) { alert('Please fill in all three fields.'); return; }
-  const maxId = systems.reduce((m, s) => Math.max(m, s.id), 0);
-  systems.push({ id: maxId + 1, name, wattage: watts, costPerInstall: cost });
-  saveSystems();
-  document.getElementById('newName').value = '';
+  const maxId = ADMIN.systems.reduce((m, s) => Math.max(m, s.id), 0);
+  ADMIN.systems.push({ id: maxId + 1, name, wattage: watts, costPerInstall: cost });
+  saveAdmin();
+  document.getElementById('newName').value  = '';
   document.getElementById('newWatts').value = '';
-  document.getElementById('newCost').value = '';
-  renderAdminTable();
+  document.getElementById('newCost').value  = '';
+  renderAdminSystems();
+  calcAdminSize();
 }
 
 function deleteSys(id) {
-  if (systems.length === 1) { alert('Cannot delete the last system. Add another first.'); return; }
-  systems = systems.filter(s => s.id !== id);
-  saveSystems();
-  renderAdminTable();
+  if (ADMIN.systems.length === 1) { alert('Cannot delete the last system. Add another first.'); return; }
+  ADMIN.systems = ADMIN.systems.filter(s => s.id !== id);
+  saveAdmin();
+  renderAdminSystems();
+  calcAdminSize();
 }
 
 // ── Init ───────────────────────────────────────────────────────────────────
-refreshPreviews();
+updateHints();
 </script>
 </body>
 </html>
