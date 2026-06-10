@@ -2,8 +2,30 @@
 
 ---
 
-## v1.3 — UI Polish, CTA & Cleanup
+## v1.4 — Input-Range Model (index.html)
 **Current version**
+
+### Overview
+Splits the codebase into two versions:
+- **`index.html`** — new input-range model (this version): ranges come from fleet event frequency brackets chosen by the user; system wattage is a single recommended value.
+- **`wattage_range.html`** — preserved copy of v1.3: ranges come from lower/upper wattage bounds multiplied by $/W.
+
+### Changes
+- **Single recommended wattage** — System sizing now outputs one number (`recW = MROUND(totalWh ÷ 5 × 1.1, 5)`) with a single install cost (`recW × $/W × fleet`). The wattage lower/upper bound percentage inputs have been removed.
+- **Segmented range selectors on Step 2** — Number inputs for battery replacements, service calls, and jump starts have been replaced with pill-button segmented controls. Users pick a bracket (e.g. "1 – 2", "4 – 7") instead of typing exact numbers.
+  - Battery replacements per trailer / year: `< 1` · `1 – 2` · `2 – 3` · `3+`
+  - Service calls per year (fleet): `1 – 3` · `4 – 7` · `8 – 12` · `12+`
+  - Jump starts per year (fleet): `1 – 4` · `5 – 9` · `10 – 15` · `15+`
+- **Savings / payback / ROI as ranges** — The lo/hi bounds on each event bracket drive a savings range; payback and ROI are derived from those bounds. Investment remains a single value.
+  - Annual Savings: `lo_savings – hi_savings`
+  - Payback Period: `invest ÷ hi_savings` – `invest ÷ lo_savings` years
+  - 5-Year ROI: `lo_savings × 5 ÷ invest` × – `hi_savings × 5 ÷ invest` ×
+- **Chart uses midpoint values** — The bar chart plots the midpoint of each variable cost range for a representative snapshot.
+- **Admin panel simplified** — System Sizing section now shows min wattage, recommended wattage, and single install cost per unit. The lowerPct / upperPct bound fields have been removed.
+
+---
+
+## v1.3 — UI Polish, CTA & Cleanup
 
 ### Changes
 - **Icon grid fix** — Problem-selection cards (Battery, Lift Gate, Reefer, APU) now use a fixed-height icon container so all emoji icons align and cards are uniform in height across all screen sizes.

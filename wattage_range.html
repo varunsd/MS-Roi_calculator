@@ -110,18 +110,6 @@
     .btn-danger:hover    { background: #fca5a5; }
     .btn-sm { padding: 5px 12px; font-size: 12px; border-radius: 6px; }
 
-    /* ── Segmented range selector ── */
-    .seg-group { display: flex; flex-direction: column; gap: 5px; }
-    .seg-label { font-size: 13px; font-weight: 600; color: var(--text); display: flex; align-items: center; gap: 6px; }
-    .seg-ctrl  { display: flex; background: var(--bg); border-radius: 10px; padding: 4px; gap: 3px; }
-    .seg-btn {
-      flex: 1; padding: 10px 6px; border: none; background: transparent;
-      border-radius: 7px; font-size: 13px; font-weight: 600;
-      cursor: pointer; color: var(--muted); transition: all .18s; white-space: nowrap; text-align: center;
-    }
-    .seg-btn.active { background: #fff; color: var(--primary); box-shadow: 0 1px 4px rgba(0,0,0,.12); }
-    .seg-btn:hover:not(.active) { color: var(--text); }
-
     /* ── Results ── */
     .results-header { background: linear-gradient(135deg, #064e3b 0%, #065f46 100%); color: #fff; padding: 26px 32px; }
     .results-header .step-badge { font-size: 11px; opacity: .65; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
@@ -326,47 +314,34 @@
         <!-- Battery replacements — shown only when battery selected -->
         <div id="batterySection">
           <div class="sec-title" style="margin-top:0;">Battery Maintenance</div>
-          <div class="seg-group">
-            <div class="seg-label">
-              Battery Replacements per Trailer / Year
-              <span class="tip" title="Approximate number of times per year you replace batteries on each vehicle">?</span>
+          <div class="form-grid one">
+            <div class="form-group">
+              <label for="battReplPerYear">
+                Battery Replacements per Trailer / Year
+                <span class="tip" title="Average number of times per year you replace batteries on each vehicle">?</span>
+              </label>
+              <input type="number" id="battReplPerYear" value="1" min="0" step="0.5" oninput="S.battReplPerYear = +this.value||0; refreshPreview()">
+              <span class="hint" id="battCostHint">Loading cost details from Admin…</span>
             </div>
-            <div class="seg-ctrl" id="battReplCtrl">
-              <button class="seg-btn"        onclick="pickRange(this,'battRepl')" data-lo="0.5" data-hi="1"  >Less than 1</button>
-              <button class="seg-btn active" onclick="pickRange(this,'battRepl')" data-lo="1"   data-hi="2"  >1 – 2</button>
-              <button class="seg-btn"        onclick="pickRange(this,'battRepl')" data-lo="2"   data-hi="3"  >2 – 3</button>
-              <button class="seg-btn"        onclick="pickRange(this,'battRepl')" data-lo="3"   data-hi="5"  >3 or more</button>
-            </div>
-            <span class="hint" id="battCostHint">Loading cost details from Admin…</span>
           </div>
         </div>
 
-        <div class="sec-title" style="margin-top:24px;">Service Calls &amp; Jump Starts</div>
-        <div style="display:flex; flex-direction:column; gap:18px;">
-          <div class="seg-group">
-            <div class="seg-label">
+        <div class="sec-title" id="serviceSecTitle">Service Calls &amp; Jump Starts</div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="serviceCallsPerYear">
               Service Calls per Year — Fleet Total
               <span class="tip" title="Total unplanned service or roadside call-out events across your entire fleet per year">?</span>
-            </div>
-            <div class="seg-ctrl" id="serviceCallCtrl">
-              <button class="seg-btn"        onclick="pickRange(this,'serviceCall')" data-lo="1"  data-hi="3" >1 – 3</button>
-              <button class="seg-btn active" onclick="pickRange(this,'serviceCall')" data-lo="4"  data-hi="7" >4 – 7</button>
-              <button class="seg-btn"        onclick="pickRange(this,'serviceCall')" data-lo="8"  data-hi="12">8 – 12</button>
-              <button class="seg-btn"        onclick="pickRange(this,'serviceCall')" data-lo="12" data-hi="18">12+</button>
-            </div>
+            </label>
+            <input type="number" id="serviceCallsPerYear" value="5" min="0" step="1" oninput="S.serviceCallsPerYear = +this.value||0; refreshPreview()">
             <span class="hint" id="serviceHint">Loading…</span>
           </div>
-          <div class="seg-group">
-            <div class="seg-label">
+          <div class="form-group">
+            <label for="jumpStartsPerYear">
               Jump Starts per Year — Fleet Total
               <span class="tip" title="Total dead-battery jump start events across your entire fleet per year">?</span>
-            </div>
-            <div class="seg-ctrl" id="jumpStartCtrl">
-              <button class="seg-btn"        onclick="pickRange(this,'jumpStart')" data-lo="1"  data-hi="4" >1 – 4</button>
-              <button class="seg-btn active" onclick="pickRange(this,'jumpStart')" data-lo="5"  data-hi="9" >5 – 9</button>
-              <button class="seg-btn"        onclick="pickRange(this,'jumpStart')" data-lo="10" data-hi="15">10 – 15</button>
-              <button class="seg-btn"        onclick="pickRange(this,'jumpStart')" data-lo="15" data-hi="22">15+</button>
-            </div>
+            </label>
+            <input type="number" id="jumpStartsPerYear" value="7" min="0" step="1" oninput="S.jumpStartsPerYear = +this.value||0; refreshPreview()">
             <span class="hint" id="jumpHint">Loading…</span>
           </div>
         </div>
@@ -375,8 +350,8 @@
         <div id="repairSummary"></div>
 
         <div class="preview-box">
-          <div class="plbl">Estimated Annual Savings Range — fleet-wide</div>
-          <div class="pval" id="prevTotal">$0 – $0</div>
+          <div class="plbl">Estimated Total Annual Savings — fleet-wide</div>
+          <div class="pval" id="prevTotal">$0</div>
         </div>
       </div>
       <div class="nav-btns">
@@ -550,8 +525,8 @@
 
       <!-- Section 3: System Sizing & Range -->
       <div class="admin-sec">
-        <div class="admin-sec-title">&#9728; System Sizing</div>
-        <p style="font-size:12.5px;color:var(--muted);margin-bottom:14px;">Define the typical daily electrical loads to compute the recommended solar system wattage for each unit.</p>
+        <div class="admin-sec-title">&#9728; System Sizing &amp; Cost Range</div>
+        <p style="font-size:12.5px;color:var(--muted);margin-bottom:14px;">Define the typical daily electrical loads to compute the recommended solar system wattage. Set the lower/upper bounds to generate a cost range shown to customers.</p>
 
         <table class="load-table">
           <thead>
@@ -588,7 +563,24 @@
           </tbody>
         </table>
 
-        <div class="size-result" id="sizeResult" style="margin-top:14px;">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px;">
+          <div class="admin-field">
+            <label>Lower Bound (% below recommended)</label>
+            <div class="inp-wrap"><span class="inp-suf">%</span>
+              <input type="number" class="suf" id="aLowerPct" min="0" max="50"
+                oninput="ADMIN.lowerPct=+this.value||0; saveAdmin(); calcAdminSize()">
+            </div>
+          </div>
+          <div class="admin-field">
+            <label>Upper Bound (% above recommended)</label>
+            <div class="inp-wrap"><span class="inp-suf">%</span>
+              <input type="number" class="suf" id="aUpperPct" min="0" max="100"
+                oninput="ADMIN.upperPct=+this.value||0; saveAdmin(); calcAdminSize()">
+            </div>
+          </div>
+        </div>
+
+        <div class="size-result" id="sizeResult">
           <div class="size-result-row"><span class="sr-lbl">Loading…</span><span class="sr-val"></span></div>
         </div>
       </div>
@@ -596,7 +588,7 @@
       <!-- Section 4: System Cost Basis -->
       <div class="admin-sec">
         <div class="admin-sec-title">&#9889; System Cost Basis</div>
-        <p style="font-size:12.5px;color:var(--muted);margin-bottom:14px;">The install cost per unit is the recommended wattage multiplied by this $/Watt rate. Fleet investment = cost per unit × fleet size.</p>
+        <p style="font-size:12.5px;color:var(--muted);margin-bottom:14px;">The install cost is derived directly from system wattage. The lower and upper wattage bounds above are each multiplied by this $/Watt rate to produce the cost range shown to customers.</p>
         <div class="admin-grid">
           <div class="admin-field">
             <label>System Cost Basis</label>
@@ -620,9 +612,9 @@ const S = {
   companyName: '',
   fleetSize: 10,
   problems: ['battery'],
-  battReplRange:    { lo: 1, hi: 2 },   // replacements per trailer / year
-  serviceCallRange: { lo: 4, hi: 7 },   // fleet total per year
-  jumpStartRange:   { lo: 5, hi: 9 },   // fleet total per year
+  battReplPerYear: 1,
+  serviceCallsPerYear: 5,
+  jumpStartsPerYear: 7,
 };
 
 // ── Admin settings (persisted to localStorage) ─────────────────────────────
@@ -635,6 +627,7 @@ function defaultAdmin() {
     telW: 15, telH: 18,
     lgW: 1100, lgH: 1.5,
     othW: 10, othH: 5,
+    lowerPct: 5, upperPct: 10,
     costPerWatt: 5.88
   };
 }
@@ -654,37 +647,33 @@ const fmt  = n => '$' + Math.round(n).toLocaleString('en-US');
 const fmtR = (lo, hi) => (lo === hi) ? fmt(lo) : `${fmt(lo)} – ${fmt(hi)}`;
 
 // ── Calculations ───────────────────────────────────────────────────────────
-function calcRecW() {
-  const totalWh = ADMIN.telW * ADMIN.telH + ADMIN.lgW * ADMIN.lgH + ADMIN.othW * ADMIN.othH;
-  const minW    = totalWh / 5;                         // ÷ 5 peak sun hours
-  return Math.round(minW * 1.1 / 5) * 5;              // +10% buffer, MROUND to 5W
-}
-function calcInstallCost() { return calcRecW() * ADMIN.costPerWatt; }
-
-// Each variable cost returns [lo, hi]; fixed lump sums return a single number
-function calcBatteryRange() {
-  if (!S.problems.includes('battery')) return [0, 0];
-  const lo = (ADMIN.batteryCost * S.battReplRange.lo + ADMIN.laborRate * ADMIN.battReplTime) * S.fleetSize;
-  const hi = (ADMIN.batteryCost * S.battReplRange.hi + ADMIN.laborRate * ADMIN.battReplTime) * S.fleetSize;
-  return [lo, hi];
+function calcBattery()  {
+  if (!S.problems.includes('battery')) return 0;
+  return (ADMIN.batteryCost * S.battReplPerYear + ADMIN.laborRate * ADMIN.battReplTime) * S.fleetSize;
 }
 function calcLiftGate() { return S.problems.includes('liftgate') ? ADMIN.liftGateAnnual : 0; }
 function calcReefer()   { return S.problems.includes('reefer')   ? ADMIN.reeferAnnual   : 0; }
 function calcAPU()      { return S.problems.includes('apu')      ? ADMIN.apuAnnual      : 0; }
-function calcServiceCallRange() {
-  return [ADMIN.serviceCallFee * S.serviceCallRange.lo, ADMIN.serviceCallFee * S.serviceCallRange.hi];
-}
-function calcJumpStartRange() {
-  const perEvent = ADMIN.jumpStartFee + ADMIN.jumpStartTime * ADMIN.laborRate;
-  return [perEvent * S.jumpStartRange.lo, perEvent * S.jumpStartRange.hi];
+function calcServiceCalls() { return ADMIN.serviceCallFee * S.serviceCallsPerYear; }
+function calcJumpStarts()   { return (ADMIN.jumpStartFee + ADMIN.jumpStartTime * ADMIN.laborRate) * S.jumpStartsPerYear; }
+function calcTotalSavings() {
+  return calcBattery() + calcLiftGate() + calcReefer() + calcAPU() + calcServiceCalls() + calcJumpStarts();
 }
 
-function calcSavingsRange() {
-  const [bLo, bHi] = calcBatteryRange();
-  const fixed = calcLiftGate() + calcReefer() + calcAPU();
-  const [sLo, sHi] = calcServiceCallRange();
-  const [jLo, jHi] = calcJumpStartRange();
-  return { lo: bLo + fixed + sLo + jLo, hi: bHi + fixed + sHi + jHi };
+function calcSizeRange() {
+  const totalWh = ADMIN.telW * ADMIN.telH + ADMIN.lgW * ADMIN.lgH + ADMIN.othW * ADMIN.othH;
+  const minW    = totalWh / 5;                                       // ÷ 5 peak sun hours
+  const recW    = Math.round(minW * 1.1 / 5) * 5;                   // +10% buffer, MROUND to 5W
+  const lowerW  = Math.max(5, Math.round(recW * (1 - ADMIN.lowerPct / 100) / 5) * 5);
+  const upperW  = Math.round(recW * (1 + ADMIN.upperPct / 100) / 5) * 5;
+  return { totalWh, minW, recW, lowerW, upperW };
+}
+
+function getCostRange() {
+  const { lowerW, upperW } = calcSizeRange();
+  const lowerCost = lowerW * ADMIN.costPerWatt;   // cost per install at lower bound
+  const upperCost = upperW * ADMIN.costPerWatt;   // cost per install at upper bound
+  return { lowerW, upperW, lowerCost, upperCost };
 }
 
 // ── Problem toggle (step 1) ────────────────────────────────────────────────
@@ -694,14 +683,6 @@ function toggleProblem(cb) {
   } else {
     S.problems = S.problems.filter(p => p !== cb.value);
   }
-}
-
-// ── Segmented range selector ───────────────────────────────────────────────
-function pickRange(btn, key) {
-  btn.parentElement.querySelectorAll('.seg-btn').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  S[key + 'Range'] = { lo: parseFloat(btn.dataset.lo), hi: parseFloat(btn.dataset.hi) };
-  refreshPreview();
 }
 
 // ── Step 2 refresh ─────────────────────────────────────────────────────────
@@ -740,8 +721,7 @@ function refreshStep2() {
 }
 
 function refreshPreview() {
-  const { lo, hi } = calcSavingsRange();
-  document.getElementById('prevTotal').textContent = `${fmt(lo)} – ${fmt(hi)}`;
+  document.getElementById('prevTotal').textContent = fmt(calcTotalSavings());
 }
 
 function updateHints() {
@@ -775,23 +755,24 @@ function go(n) {
 
 // ── Show results ───────────────────────────────────────────────────────────
 function showResults() {
-  const invest = calcInstallCost() * S.fleetSize;
-  const { lo: savLo, hi: savHi } = calcSavingsRange();
-  const recW = calcRecW();
+  const cr = getCostRange();
 
-  // Payback: best case uses highest savings, worst case uses lowest
-  const paybackLo = savHi > 0 ? +(invest / savHi).toFixed(1) : 0;
-  const paybackHi = savLo > 0 ? +(invest / savLo).toFixed(1) : 0;
-  const roiLo = invest > 0 ? +(savLo * 5 / invest).toFixed(1) : 0;
-  const roiHi = invest > 0 ? +(savHi * 5 / invest).toFixed(1) : 0;
+  const battery      = calcBattery();
+  const liftGate     = calcLiftGate();
+  const reefer       = calcReefer();
+  const apu          = calcAPU();
+  const serviceCalls = calcServiceCalls();
+  const jumpStarts   = calcJumpStarts();
+  const totalSavings = battery + liftGate + reefer + apu + serviceCalls + jumpStarts;
 
-  // Chart uses midpoint of each variable-cost range
-  const [bLo, bHi] = calcBatteryRange();
-  const [sLo, sHi] = calcServiceCallRange();
-  const [jLo, jHi] = calcJumpStartRange();
-  const liftGate = calcLiftGate();
-  const reefer   = calcReefer();
-  const apu      = calcAPU();
+  const minInvest  = cr.lowerCost * S.fleetSize;   // lower-bound wattage × $/W × fleet
+  const maxInvest  = cr.upperCost * S.fleetSize;   // upper-bound wattage × $/W × fleet
+  // Lower cost → shorter payback, higher ROI
+  const minPayback = totalSavings > 0 ? +(minInvest / totalSavings).toFixed(1) : 0;
+  const maxPayback = totalSavings > 0 ? +(maxInvest / totalSavings).toFixed(1) : 0;
+  const minROI     = +(totalSavings * 5 / maxInvest).toFixed(1);
+  const maxROI     = +(totalSavings * 5 / minInvest).toFixed(1);
+  const { lowerW, upperW } = cr;
 
   // Swap to results
   document.querySelector('.step.active').classList.remove('active');
@@ -802,43 +783,43 @@ function showResults() {
   const co = S.companyName ? ` for ${S.companyName}` : '';
   document.getElementById('rSub').textContent = `${S.fleetSize}-unit fleet${co} — Merlin Solar investment analysis.`;
 
-  // System banner (single wattage, single install cost)
+  // System banner
   document.getElementById('sysBanner').innerHTML = `
     <div style="background:linear-gradient(135deg,var(--primary) 0%,var(--primary-light) 100%);color:#fff;border-radius:12px;padding:16px 22px;display:flex;align-items:center;gap:16px;">
       <div style="font-size:30px;">☀️</div>
       <div style="flex:1;">
         <div style="font-size:15px;font-weight:700;margin-bottom:4px;">Recommended Merlin Solar System</div>
-        <div style="font-size:12.5px;opacity:.82;">Recommended size: <strong>${recW}W per unit</strong></div>
+        <div style="font-size:12.5px;opacity:.82;">System size range: <strong>${lowerW}W – ${upperW}W</strong></div>
       </div>
       <div style="text-align:right;flex-shrink:0;">
-        <div style="font-size:20px;font-weight:800;color:var(--accent);">${fmt(calcInstallCost())}</div>
-        <div style="font-size:11.5px;opacity:.7;">per install · ${fmt(invest)} fleet total</div>
+        <div style="font-size:20px;font-weight:800;color:var(--accent);">${fmt(cr.lowerCost)} – ${fmt(cr.upperCost)}</div>
+        <div style="font-size:11.5px;opacity:.7;">per install</div>
       </div>
     </div>`;
 
   // Range note
   const rn = document.getElementById('rangeNote');
   rn.style.display = '';
-  rn.textContent = `Ranges reflect your selected fleet event frequency brackets. Lower bracket = lower savings (longer payback, lower ROI); upper bracket = higher savings (shorter payback, higher ROI). Investment is a single value based on ${recW}W @ ${fmt(ADMIN.costPerWatt)}/W.`;
+  rn.textContent = `Ranges reflect a ${lowerW}W–${upperW}W system size window (−${ADMIN.lowerPct}% / +${ADMIN.upperPct}% around recommended size) at ${fmt(ADMIN.costPerWatt)}/W. Lower investment = shorter payback and higher ROI.`;
 
   // Metrics
-  document.getElementById('mInvest').textContent    = fmt(invest);
-  document.getElementById('mInvestSub').textContent = `${S.fleetSize} units @ ${fmt(calcInstallCost())} each`;
-  document.getElementById('mSavings').textContent   = `${fmt(savLo)} – ${fmt(savHi)}`;
+  document.getElementById('mInvest').textContent    = fmtR(minInvest, maxInvest);
+  document.getElementById('mInvestSub').textContent = `${S.fleetSize} units, fleet-wide`;
+  document.getElementById('mSavings').textContent   = fmt(totalSavings);
 
-  document.getElementById('mPayback').textContent    = savLo > 0 ? `${paybackLo} – ${paybackHi}` : '—';
+  document.getElementById('mPayback').textContent    = `${minPayback} – ${maxPayback}`;
   document.getElementById('mPaybackSub').textContent = 'years (range)';
-  document.getElementById('mROI').textContent        = `${roiLo}× – ${roiHi}×`;
+  document.getElementById('mROI').textContent        = `${minROI}× – ${maxROI}×`;
   document.getElementById('mROISub').textContent     = '5-year ROI (range)';
 
-  // Chart — midpoint of each range; only non-zero categories
+  // Chart — only non-zero categories
   const rows = [
-    ['Battery Replacement', (bLo + bHi) / 2],
+    ['Battery Replacement', battery],
     ['Lift Gate Repairs',   liftGate],
     ['Reefer Repairs',      reefer],
     ['APU Repairs',         apu],
-    ['Service Calls',       (sLo + sHi) / 2],
-    ['Jump Starts',         (jLo + jHi) / 2],
+    ['Service Calls',       serviceCalls],
+    ['Jump Starts',         jumpStarts],
   ].filter(([, v]) => v > 0);
   if (window._chart) window._chart.destroy();
   const colors = { 'Battery Replacement':'#1e40af', 'Lift Gate Repairs':'#065f46', 'Reefer Repairs':'#0e7490', 'APU Repairs':'#7c3aed', 'Service Calls':'#92400e', 'Jump Starts':'#b45309' };
@@ -896,6 +877,8 @@ function openAdmin() {
   set('aTelW',  ADMIN.telW);  set('aTelH',  ADMIN.telH);
   set('aLgW',   ADMIN.lgW);   set('aLgH',   ADMIN.lgH);
   set('aOthW',  ADMIN.othW);  set('aOthH',  ADMIN.othH);
+  set('aLowerPct', ADMIN.lowerPct);
+  set('aUpperPct', ADMIN.upperPct);
   set('aCostPerWatt', ADMIN.costPerWatt);
   calcAdminSize();
   document.getElementById('adminModal').style.display = 'flex';
@@ -918,14 +901,14 @@ function calcAdminSize() {
   set('aOthWh',   oth.toLocaleString()   + ' Wh');
   set('aTotalWh', total.toLocaleString() + ' Wh');
 
-  const minW = total / 5;
-  const recW = calcRecW();
-  const cost = calcInstallCost();
+  const { minW, recW, lowerW, upperW } = calcSizeRange();
+  const cr = getCostRange();
 
   document.getElementById('sizeResult').innerHTML = `
     <div class="size-result-row"><span class="sr-lbl">Min system size (÷ 5 peak sun hrs)</span><span class="sr-val">${Math.round(minW)} W</span></div>
-    <div class="size-result-row"><span class="sr-lbl">Recommended size (+10% buffer, MROUND 5)</span><span class="sr-val">${recW} W</span></div>
-    <div class="size-result-row"><span class="sr-lbl">Install cost (@ ${fmt(ADMIN.costPerWatt)}/W)</span><span class="sr-val">${fmt(cost)} per unit</span></div>`;
+    <div class="size-result-row"><span class="sr-lbl">Recommended size (+10% buffer)</span><span class="sr-val">${recW} W</span></div>
+    <div class="size-result-row"><span class="sr-lbl">System range (−${ADMIN.lowerPct}% / +${ADMIN.upperPct}%)</span><span class="sr-val">${lowerW} W – ${upperW} W</span></div>
+    <div class="size-result-row"><span class="sr-lbl">Install cost range (@ ${fmt(ADMIN.costPerWatt)}/W)</span><span class="sr-val">${fmt(cr.lowerCost)} – ${fmt(cr.upperCost)}</span></div>`;
 }
 
 // ── Init ───────────────────────────────────────────────────────────────────
