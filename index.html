@@ -58,9 +58,9 @@
     .problem-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 8px; }
     .problem-card { position: relative; cursor: pointer; }
     .problem-card input[type="checkbox"] { position: absolute; opacity: 0; width: 0; height: 0; }
-    .pcard-inner { border: 2px solid var(--border); border-radius: 12px; padding: 16px 10px; text-align: center; transition: all .2s; background: #fff; user-select: none; }
+    .pcard-inner { border: 2px solid var(--border); border-radius: 12px; padding: 14px 8px; text-align: center; transition: all .2s; background: #fff; user-select: none; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; }
     .problem-card input:checked ~ .pcard-inner { border-color: var(--primary); background: #eff6ff; box-shadow: 0 0 0 3px rgba(12,45,107,.08); }
-    .pcard-icon  { font-size: 24px; margin-bottom: 7px; }
+    .pcard-icon  { font-size: 24px; height: 36px; display: flex; align-items: center; justify-content: center; margin-bottom: 6px; line-height: 1; }
     .pcard-label { font-size: 12px; font-weight: 600; color: var(--text); line-height: 1.3; }
     .problem-card input:checked ~ .pcard-inner .pcard-label { color: var(--primary); }
 
@@ -405,12 +405,19 @@
           <canvas id="savingsChart" height="200"></canvas>
         </div>
 
-        <div class="chart-card">
-          <div class="chart-title">Detailed Cost Analysis</div>
-          <table class="brkdn-table">
-            <thead><tr><th>Cost Category</th><th class="ra">Annual Savings</th><th class="ra">5-Year Total</th></tr></thead>
-            <tbody id="brkdnBody"></tbody>
-          </table>
+        <!-- CTA -->
+        <div style="background:linear-gradient(135deg,#0c2d6b 0%,#1a4aa0 100%);border-radius:14px;padding:28px 32px;text-align:center;margin-bottom:18px;" class="no-print">
+          <div style="font-size:22px;margin-bottom:10px;">&#128222;</div>
+          <div style="font-size:18px;font-weight:800;color:#fff;margin-bottom:8px;">Ready for a deeper analysis?</div>
+          <div style="font-size:13.5px;color:rgba(255,255,255,.82);line-height:1.7;max-width:480px;margin:0 auto 20px;">
+            These numbers are directional. Merlin Solar can do a free, no-obligation consultation to model your specific fleet, routes, and load profile — and size the right system for you.
+          </div>
+          <a href="mailto:contactus@merlinsolar.com"
+             style="display:inline-block;background:var(--accent);color:#fff;font-weight:700;font-size:14.5px;padding:12px 28px;border-radius:9px;text-decoration:none;transition:background .2s;"
+             onmouseover="this.style.background='#d97706'" onmouseout="this.style.background='#f59e0b'">
+            &#9993;&#65039; Contact Us — contactus@merlinsolar.com
+          </a>
+          <div style="font-size:12px;color:rgba(255,255,255,.5);margin-top:10px;">Free consultation · No commitment</div>
         </div>
 
         <div style="display:flex;gap:12px;flex-wrap:wrap;" class="no-print">
@@ -805,7 +812,7 @@ function showResults() {
   document.getElementById('mROI').textContent        = `${minROI}× – ${maxROI}×`;
   document.getElementById('mROISub').textContent     = '5-year ROI (range)';
 
-  // Breakdown table — only show non-zero rows
+  // Chart — only non-zero categories
   const rows = [
     ['Battery Replacement', battery],
     ['Lift Gate Repairs',   liftGate],
@@ -814,21 +821,6 @@ function showResults() {
     ['Service Calls',       serviceCalls],
     ['Jump Starts',         jumpStarts],
   ].filter(([, v]) => v > 0);
-
-  document.getElementById('brkdnBody').innerHTML =
-    rows.map(([lbl, v]) => `
-      <tr>
-        <td>${lbl}</td>
-        <td class="ra">${fmt(v)}</td>
-        <td class="ra">${fmt(v * 5)}</td>
-      </tr>`).join('') +
-    `<tr class="tr-total">
-      <td>Total Annual Savings</td>
-      <td class="ra">${fmt(totalSavings)}</td>
-      <td class="ra">${fmt(totalSavings * 5)}</td>
-    </tr>`;
-
-  // Chart — only non-zero categories
   if (window._chart) window._chart.destroy();
   const colors = { 'Battery Replacement':'#1e40af', 'Lift Gate Repairs':'#065f46', 'Reefer Repairs':'#0e7490', 'APU Repairs':'#7c3aed', 'Service Calls':'#92400e', 'Jump Starts':'#b45309' };
   window._chart = new Chart(
