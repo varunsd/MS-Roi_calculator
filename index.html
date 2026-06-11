@@ -396,18 +396,10 @@
       </div>
       <div class="card-body">
 
-        <!-- System range banner -->
+        <!-- System banner -->
         <div id="sysBanner" style="margin-bottom:22px;"></div>
 
-        <!-- Range note -->
-        <div id="rangeNote" style="display:none;background:#fffbeb;border:1px solid #fcd34d;border-radius:10px;padding:11px 16px;font-size:13px;color:#92400e;margin-bottom:18px;"></div>
-
         <div class="metrics-grid">
-          <div class="metric m-invest">
-            <div class="mlbl">Total Investment</div>
-            <div class="mval" id="mInvest">—</div>
-            <div class="msub" id="mInvestSub">fleet-wide</div>
-          </div>
           <div class="metric m-save">
             <div class="mlbl">Annual Savings</div>
             <div class="mval" id="mSavings">—</div>
@@ -802,7 +794,7 @@ function showResults() {
   const co = S.companyName ? ` for ${S.companyName}` : '';
   document.getElementById('rSub').textContent = `${S.fleetSize}-unit fleet${co} — Merlin Solar investment analysis.`;
 
-  // System banner (single wattage, single install cost)
+  // System banner (single recommended wattage)
   document.getElementById('sysBanner').innerHTML = `
     <div style="background:linear-gradient(135deg,var(--primary) 0%,var(--primary-light) 100%);color:#fff;border-radius:12px;padding:16px 22px;display:flex;align-items:center;gap:16px;">
       <div style="font-size:30px;">☀️</div>
@@ -810,20 +802,9 @@ function showResults() {
         <div style="font-size:15px;font-weight:700;margin-bottom:4px;">Recommended Merlin Solar System</div>
         <div style="font-size:12.5px;opacity:.82;">Recommended size: <strong>${recW}W per unit</strong></div>
       </div>
-      <div style="text-align:right;flex-shrink:0;">
-        <div style="font-size:20px;font-weight:800;color:var(--accent);">${fmt(calcInstallCost())}</div>
-        <div style="font-size:11.5px;opacity:.7;">per install · ${fmt(invest)} fleet total</div>
-      </div>
     </div>`;
 
-  // Range note
-  const rn = document.getElementById('rangeNote');
-  rn.style.display = '';
-  rn.textContent = `Ranges reflect your selected fleet event frequency brackets. Lower bracket = lower savings (longer payback, lower ROI); upper bracket = higher savings (shorter payback, higher ROI). Investment is a single value based on ${recW}W @ ${fmt(ADMIN.costPerWatt)}/W.`;
-
   // Metrics
-  document.getElementById('mInvest').textContent    = fmt(invest);
-  document.getElementById('mInvestSub').textContent = `${S.fleetSize} units @ ${fmt(calcInstallCost())} each`;
   document.getElementById('mSavings').textContent   = `${fmt(savLo)} – ${fmt(savHi)}`;
 
   document.getElementById('mPayback').textContent    = savLo > 0 ? `${paybackLo} – ${paybackHi}` : '—';
